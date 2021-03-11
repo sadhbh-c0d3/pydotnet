@@ -1,0 +1,2 @@
+boost ==1.55
+dotnet-dev # a copy can be found in /depends directory

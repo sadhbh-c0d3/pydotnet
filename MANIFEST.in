@@ -1,0 +1,10 @@
+recursive-include dotnet *.dll
+recursive-include include *.h
+recursive-include src *.h
+recursive-include src *.cpp
+recursive-include docs *.*
+include requirements.txt
+include requirements-build.txt
+include bld.bat
+include *.sln
+include *.vcxproj
