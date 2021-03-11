@@ -599,49 +599,124 @@ Sometimes automatic method overload resolution doesn't work as expected. We can 
      |    within namespace System.Collections.Generic:
     ...
 
+### Constructors
+The constructors can be accessed via __createinstance__ property, and it may represent constructor overloads.
 
 
+    # Let's see how can we construct a List of Int32
+    help(List[Int32].__createinstance__)
+
+Help on method `List[Int32].__init__` in module `mscorlib`:
+
+      __init__() -> List[Int32]
+
+      __init__(capacity: Int32) -> List[Int32]
+
+      __init__(collection: IEnumerable[Int32]) -> List[Int32]
+
+
+    References:
+     |
+     |  ----------------------------------------------------------------------
+    ...
+
+### Explicit constructor selection
+Sometimes automatic constructor resolution doesn't work as expected. We can still specify overload explicitly.
+
+**NOTE** None can be used to select parameterless constructor.
+
+    # Let's select first constructor (the parameterless one)
+    help(List[Int32][None])
+    Help on method List[Int32].__init__ in module mscorlib:
+
+      __init__() -> List[Int32]
+
+
+    References:
+     |
+     |  ----------------------------------------------------------------------
+     |  Types defined in assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089:
+     |
+     |
+     |    within namespace System.Collections.Generic:
+    ...
+
+### Generic methods
+The generic methods are supported seamlessly.
+
+    from Beach.Sea.Ships import Frigate, ShipExtensions
+
+    frigate = Frigate('DaVinci')
+
+    payload = List[Int32]([1,2,3])
+
+    # We call generic method as any other method
+    ShipExtensions.AddPayload(frigate, payload)
+
+    frigate.Payload
+    [1, 2, 3]
+
+    # Let's take a look at `Fire` method
+    help(ShipExtensions.AddPayload)
+    Help on method ShipExtensions.AddPayload in module Beach.Sea:
+
+      static AddPayload(ship: IShip, payload: TPayload)
+
+
+    References:
+     |
+     |  ----------------------------------------------------------------------
+     |  Types defined in assembly Beach.Sea, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null:
+     |
+     |
+     |    within namespace Beach.Sea.Ships:
+    ...
+
+### Explicit generic parameter types specialization
+Sometimes automatic generic parameter type resolution doesn't work. In those cases we can still select specialization that we want to use.
+
+    In [44]:
+    # Explicit generic parameter types specialization
+    ShipExtensions.AddPayload[List[Int32]](frigate, [1,2,3])
+
+**Note** that since we explicilty say that AddPayload method takes a List<Int32> we can pass python list, and it will implicitly get converted into List<int32>, because this is the expected type.
 
 
 ## Extension methods
 The extension methods are supported seamlessly.
 
-In [45]:
-frigate = Frigate("DaVinci")
+    frigate = Frigate("DaVinci")
 
-Beach.Sea.Ships.Ranges.SetRanges({'Frigate':2000})
+    Beach.Sea.Ships.Ranges.SetRanges({'Frigate':2000})
 
-# Calling extension method GetRange()
-frigate.GetRange()
-Out[45]:
-2000
+    # Calling extension method GetRange()
+    frigate.GetRange()
+    2000
+
 We can also call any generic extension method:
 
-In [46]:
-frigate = Frigate("DaVinci")
+    frigate = Frigate("DaVinci")
 
-payload = List[Int32]([1,2,3])
+    payload = List[Int32]([1,2,3])
 
-# We can also call generic extension method
-frigate.AddPayload(payload)
-In [47]:
-def f(x):
-    print('x = ', x)
+    # We can also call generic extension method
+    frigate.AddPayload(payload)
+    def f(x):
+        print('x = ', x)
 
-# We can wrap any python function into either Action or Func
-payload = Action1[Int32](f)
+    # We can wrap any python function into either Action or Func
+    payload = Action1[Int32](f)
 
-frigate.AddPayload(payload)
+    frigate.AddPayload(payload)
 
-frigate.Payload.Invoke(1)
-x =  1
+    frigate.Payload.Invoke(1)
+    x =  1
+
 Should the extension method be generic, the type parameters can be specialized explicitly.
 
-In [48]:
-frigate.AddPayload[List[Int32]]([1,2,3])
+    frigate.AddPayload[List[Int32]]([1,2,3])
 
-frigate.Payload
-Out[48]:
-[1, 2, 3]
-Questions?
+    frigate.Payload
+    [1, 2, 3]
+
 
