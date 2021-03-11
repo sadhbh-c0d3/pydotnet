@@ -3,6 +3,8 @@ Introduction
 
 This is Python for .NET.
 
+See presentation slides: ``/slides/Python_vs_dotNET_Interoperability.slides.html``
+
 ---------------------------
 
 Module Contents
