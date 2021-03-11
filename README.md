@@ -69,8 +69,8 @@ The invocation jumps from Python into .NET CLR and calls back to Python lambda
 
 ## Documentation
 
-See https://github.com/sadhbh-c0d3/pydotnet/blob/organize-wiki/SLIDES.md
+See https://github.com/sadhbh-c0d3/pydotnet/blob/main/SLIDES.md
 
 ## Building
 
-See https://github.com/sadhbh-c0d3/pydotnet/blob/organize-wiki/BUILD.md
+See https://github.com/sadhbh-c0d3/pydotnet/blob/main/BUILD.md
