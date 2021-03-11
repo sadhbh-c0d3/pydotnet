@@ -1,134 +1,76 @@
-Introduction
-============
+# PyDotNET (pip: dotnet)
+(CPython) &lt;==> (.NET) direct interop via embedded CLR (.pyd) through Boost.Python
 
-This is Python for .NET.
+**NOTE** Works only on Windows due to integration with Microsoft .NET environment
 
-See presentation slides: ``pydotnet/slides/Python_vs_dotNET_Interoperability.slides.html``
+## Usage
 
----------------------------
+#### Example
 
-Module Contents
-===============
+    import dotnet.seamless
+    import System
+    
+    from System.Collections.Generic import List
+    
+    lst = List[Int32]()
+    
+    lst.Add(1)
+    lst.Add(2)
+    lst.Add(3)
+    
+    lst.AddRange([4,5,6])
+    
+    lst.FindIndex(lambda x: x > 3)
 
-The *PyDotnet* is project name, while python module name is ``dotnet``.
+#### Explanation
 
-The *PyDotnet* project was initially purely C++ project, and as such you will see it has typical C++ project structure:
+Import .NET seamless integration for CPython shell
 
-* ``PyDotnet.vcproj`` in root folder
-* ``src/*.cpp`` are C++ sources
-* ``include/*.h`` are C++ headers
+    import dotnet.seamless
+    
+Import .NET namespace
 
-The project builds ``PyDotnet.pyd`` module. This module it-self is fully functional, but is not really nice to the end user. And for that reason ``dotnet`` Python package was created. 
+    import System
+    
+Import type from .NET namespace
 
-* ``dotnet/*.py`` are source of Python sugar layer, and as you may expect it depends on ``PyDotnet.pyd`` module, so it has to be built first.
+    from System.Collections.Generic import List
+    
+Create an instance of .NET type.
+This shows also how to specialize .NET generic type
 
-The ``PyDotnet.pyd`` module depends on ``Boost.Python`` and ``Boost.RegEx``. 
+    lst = List[Int32]()
 
-* ``libs/dotnet-dev/bld.bat`` script downloads Boost v1.60 and using ``python.exe`` pointed by ``%PYTHON%`` environment variable it builds ``Boost.Python`` and ``Boost.RegEx``, and copies into ``Libs`` directory of Python whose ``python.exe`` is pointed by ``%PYTHON%`` environment variable.
+Call instance method of .NET type. 
+This also converts Python int into .NET Int32
 
-The ``libs/dotnet-dev/bld.bat`` has to be ran before building ``PyDotnet.pyd`` and must be ran from ``libs/dotnet-dev`` directory.
+    lst.Add(1)
+    lst.Add(2)
+    lst.Add(3)
+    
+Call instance method of .NET type. 
+This also converts Python list into .NET IEnumerable
 
----------------------------
+    lst.AddRange([4,5,6])
 
-Build System
-============
+Call instance method of .NET type.
+Here Python lambda gets converted into .NET Predicate<Int32>.
+The invocation jumps from Python into .NET CLR and calls back to Python lambda
 
-Building process is very very easy. All you need is Python and Visual Studio.
-
-Follow this README and run commands as shown below.
-
-* We recommend using Anaconda, but Python is also good.
-
-* We recommend Visual Studio 2015, but Visual Studio 2012 should also work.
-
-* Visual Studio 2015 Community Edition can be downloaded for free from: 
-    https://www.visualstudio.com/products/visual-studio-community-vs
-
-* You need C++ compiler and .NET framework installed.
-
----------------------------
-
-Building Step-by-step
-=====================
-
-Step 1. Dependencies
---------------------
-
-In order to build ``PyDotnet.pyd`` first you need to build ``Boost.Python`` and ``Boost.Regex``.
-
-Run following commands:
-
-    cd libs/dotnet-dev
-
-    set PYTHON="C:/Python/python.exe"
-
-    bld.bat
-
-If you are using *Anaconda* you may try instead these:
-
-    cd libs
-
-    conda build dotnet-dev`
-
-    conda install dotnet-dev
-
-However I know there is some issue with that approach.
-
-The ``bld.bat`` script in ``libs/dotnet-dev`` **downloads, builds and installs** dependencies from source using Visual Studio (auto-detected: 2015 has priority over 2012 if you had both) against Python (version is auto-detected: 2.7+ or 3.+).
-
-The ``PYTHON`` environment variable controls which Python installation to use. We assume to build all package versions you need multiple versions of Python installed, in order to get package for each of those versions.
+    lst.FindIndex(lambda x: x > 3)
 
 
 
-Step 2. Module
---------------
-
-Once you build dependencies in Step 1, now you can build ``PyDotnet.pyd`` module.
-
-You do this by running command:
-
-    ``python setup.py build``
-
-and then to install
-
-     ``python setup.py install``
 
 
-Development
-===========
+## Installation
 
-Step 1. Build in-place module
------------------------------
+    pip install dotnet
 
-The ``dotnet`` Python module can be developed on the go, i.e. you can edit ``dotnet/*.py`` files and launch python and ``import dotnet`` will load new edited version of ``.py`` sources.
+## Documentation
 
-To avail of this you need to build module in place, and you can do that by running command:
+See https://github.com/sadhbh-c0d3/pydotnet/blob/organize-wiki/SLIDES.md
 
-    ``python setup.py develop``
+## Building
 
-
-Step 2. Build and debug with Visual Studio
-------------------------------------------
-
-The ``PyDotnet.pyd`` can be built and debugged from within Visual Studio.
-
-Run in command line:
-
-    ``for /f %p in ('python -c "import sys; print(sys.prefix)"') do set`` PREFIX=%p
-
-    ``setx PREFIX %PREFIX%``
-
-Next launch Visual Studio, either click icon or run:
-
-    ``C:/VS14/Common7/IDE/devenv.exe``
-
-Then Visual Studio will look for C++ includes and libs in ``%PREFIX%/Library/include``, ``%PREFIX%/Library/lib``, ``%PREFIX%/libs and %PREFIX%/include``, where ``PREFIX`` environment variable points to Python folder.
-
-
-Authors
-=======
-
-* Sonia Kolasinska <sonia.kolasinska.pro@gmail.com>
-* Ivan Smirnov
-* Ivan Kalev <ivan.kalev@gmail.com>
-* Jack Higgins
+See https://github.com/sadhbh-c0d3/pydotnet/blob/organize-wiki/BUILD.md
