@@ -65,19 +65,19 @@ In order to build ``PyDotnet.pyd`` first you need to build ``Boost.Python`` and 
 
 Run following commands:
 
-    `cd libs/dotnet-dev`
+    cd libs/dotnet-dev
 
-    `set PYTHON="C:/Python/python.exe"`
+    set PYTHON="C:/Python/python.exe"
 
-    `bld.bat`
+    bld.bat
 
 If you are using *Anaconda* you may try instead these:
 
-    `cd libs`
+    cd libs
 
-    `conda build dotnet-dev`
+    conda build dotnet-dev`
 
-    `conda install dotnet-dev`
+    conda install dotnet-dev
 
 However I know there is some issue with that approach.
 
