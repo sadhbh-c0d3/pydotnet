@@ -1,16 +1,7 @@
-About this README file
-======================
-
-This README file contains markup understood by BitBucket Overview page.
-
-
 Introduction
 ============
 
-This is Python for .NET. For user installation and usage instructions,
-check out the Wiki:
-
-https://github.com/sadhbh-c0d3/pydotnet/wiki/Home
+This is Python for .NET.
 
 ---------------------------
 
