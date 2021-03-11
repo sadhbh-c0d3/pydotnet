@@ -1,5 +1,7 @@
-# pydotnet
+# PyDotNET (pip: dotnet)
 (CPython) &lt;==> (.NET) direct interop via embedded CLR (.pyd) through Boost.Python
+
+**NOTE** Works only on Windows due to integration with Microsoft .NET environment
 
 ## Usage
 
