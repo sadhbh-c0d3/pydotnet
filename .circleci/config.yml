@@ -10,15 +10,14 @@ jobs:
       shell: cmd.exe
     steps:
       - checkout
-      - run: systeminfo
+#      - run: systeminfo
       - run:
           name: "Build Dependencies"
           shell: cmd.exe
           command: |
-            cd ./libs/dotnet-dev/
-            cmd bld.bat
-      - run:
-          name: "Build Python module"
-          shell: cmd.exe
-          command: |
-            python ./setup.py build
+            cmd ./libs/dotnet-dev/bld.bat
+#      - run:
+#          name: "Build Python module"
+#          shell: cmd.exe
+#          command: |
+#            python ./setup.py build
