@@ -14,8 +14,7 @@ jobs:
       - run:
           name: "Build Dependencies"
           command: |
-            dir
-            cd .\libs\dotnet-dev
+            cd libs\dotnet-dev
             dir
             bld.bat
 #      - run:
