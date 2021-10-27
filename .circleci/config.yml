@@ -13,10 +13,7 @@ jobs:
 #      - run: systeminfo
       - run:
           name: "Build Dependencies"
-          command: |
-            cd libs\dotnet-dev
-            dir
-            bld.bat
+          command: ".\libs\dotnet-dev\bld.bat"
 #      - run:
 #          name: "Build Python module"
 #          shell: cmd.exe
