@@ -7,13 +7,15 @@ jobs:
   build:
     executor:
       name: win/default
-      shell: cmd.exe
+      shell: powershell.exe
     steps:
       - checkout
 #      - run: systeminfo
       - run:
           name: "Build Dependencies"
-          command: ".\\libs\\dotnet-dev\\bld.bat"
+          command: |
+            cd .\\libs\\dotnet-dev
+            bld.bat
 #      - run:
 #          name: "Build Python module"
 #          shell: cmd.exe
