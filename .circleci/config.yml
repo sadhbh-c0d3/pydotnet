@@ -12,7 +12,13 @@ jobs:
       - checkout
       - run: systeminfo
       - run:
-          name: "Build"
+          name: "Build Dependencies"
+          shell: cmd.exe
+          command: |
+            cd libs/dotnet-dev
+            bld.bat
+      - run:
+          name: "Build Python module"
           shell: cmd.exe
           command: |
             python ./setup.py build
