@@ -46,10 +46,7 @@ import shutil
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
 
-try:
-    from sig.automation.build import Command, VersionResolver
-except ImportError:
-    from build import Command, VersionResolver
+from build import Command, VersionResolver
 
 
 version = VersionResolver.find_version()
