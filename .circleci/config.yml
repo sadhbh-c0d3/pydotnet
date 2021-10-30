@@ -10,7 +10,7 @@ jobs:
       shell: cmd.exe
     steps:
       - checkout
-#      - run: systeminfo
+      - run: systeminfo
       - run:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
@@ -21,3 +21,6 @@ jobs:
       - run:
           name: "Build Python module"
           command:  python ./setup.py build
+      - store_artifacts:
+          path: ./build
+          destination: build
