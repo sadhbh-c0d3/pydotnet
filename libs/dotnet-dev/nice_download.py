@@ -10,8 +10,7 @@ except:
         return int(u.info()['Content-Length'])
 
 
-def download(url):
-    file_name = url.split('/')[-1]
+def download(url, file_name):
     print("Openning: %s" % (url,))
     u = urlopen(url)
     with open(file_name, 'wb') as f:
@@ -33,5 +32,5 @@ def download(url):
 
 
 if __name__ == '__main__':
-    download(sys.argv[1])
+    download(sys.argv[1], sys.argv[2])
 

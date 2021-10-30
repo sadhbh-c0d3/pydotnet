@@ -28,7 +28,7 @@ if not defined CONDA_BUILD (
             rem === Let's move that to 'download_boost.bat' maybe? ===
 
             if not exist ".\boost_1_64_0.tar.gz" (
-                %PYTHON% "%RECIPE_DIR%nice_download.py" https://boostorg.jfrog.io/ui/native/main/release/1.64.0/source/boost_1_64_0.tar.gz
+                %PYTHON% "%RECIPE_DIR%nice_download.py" "https://boostorg.jfrog.io/ui/api/v1/download?repoKey=main&path=release%252F1.64.0%252Fsource%252Fboost_1_64_0.tar.gz" boost_1_64_0.tar.gz
                 if errorlevel 1 exit /b 1
             )
 
