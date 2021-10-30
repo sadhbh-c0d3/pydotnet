@@ -4,20 +4,14 @@ orbs:
   win: circleci/windows@2.2.0
 
 jobs:
-  install_py39:
-    executor:
-      name: win/default
-      shell: cmd.exe    
-    steps:
-      - run:
-          name: "Install Python 3.9"
-          command: conda create -n py39 python=3.9
-  build_wheel:
+  build:
     parameters:
-      python-path:
+      python-version:
+        type: string
+      python-env:
         type: string
     environment:
-      PYTHON: << parameters.python-path >>
+      PYTHON: C:\tools\miniconda3\envs\<< parameters.python-env >>\python.exe
     executor:
       name: win/default
       shell: cmd.exe
@@ -25,11 +19,14 @@ jobs:
       - checkout
       - run: systeminfo
       - run:
+          name: "Install Python << parameters.python-version >>"
+          command: conda create -n << parameters.python-env >> python=<< parameters.python-version >>
+      - run:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
           command: bld.bat
       - run:
-          name: "Build PyDotnet Wheel"
+          name: "Build Wheel"
           command: build_wheel.bat
       - store_artifacts:
           path: ./dist
@@ -38,8 +35,6 @@ jobs:
 workflows:
   build_py39:
     jobs:
-      - install_py39
-      - build_wheel:
-          requires:
-            - install_py39
-          python-path: C:\tools\miniconda3\envs\py39\python.exe
+      - build:
+          python-version: "3.9"
+          python-env: py39 
