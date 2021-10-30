@@ -15,12 +15,17 @@ jobs:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
           command: bld.bat
-      - store_artifacts:
-          path: ./libs/dotnet-dev/boost_1_77_0/stage/lib
-          destination: boost_lib
+#      - store_artifacts:
+#          path: ./libs/dotnet-dev/boost_1_77_0/stage/lib
+#          destination: boost_lib
       - run:
           name: "Build Python module"
           command:  python ./setup.py build
+      - run:
+          name: "Build Package"
+          command:  |
+            pip install wheel
+            python ./setup.py bdist_wheel
       - store_artifacts:
           path: ./build
           destination: build
