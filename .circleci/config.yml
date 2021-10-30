@@ -14,8 +14,7 @@ jobs:
       - run:
           name: "Build Dependencies"
           command: |
-            cd .\\libs\\dotnet-dev
-            start-process "cmd.exe" "/c bld.bat"
+            Start-Process -FilePath "cmd.exe" -WorkingDirectory "libs/dotnet-dev" "/c bld.bat"
 #      - run:
 #          name: "Build Python module"
 #          shell: cmd.exe
