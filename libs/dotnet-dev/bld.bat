@@ -21,19 +21,7 @@ if not defined CONDA_BUILD (
         rem --- Then we are running bld.bat from where it's located ---
 
         if not exist ".\boost_1_77_0" (
-            rem --- Let's download boost 1.77 ---
-
-            rem === The nice_download.py and nice_extract_targz.py show progress, while download.py doesn't ===
-            rem === However nice_download.py may not work on PyPy as it uses urllib2 ===
-            rem === Let's move that to 'download_boost.bat' maybe? ===
-
-            if not exist ".\boost_1_77_0.tar.gz" (
-                %PYTHON% "%RECIPE_DIR%nice_download.py" https://boostorg.jfrog.io/ui/native/main/release/1.77.0/source/boost_1_77_0.tar.gz
-                if errorlevel 1 exit /b 1
-            )
-
-            rem For some reason error occurs when extracting one of the html docs. We don't really need them anyways
-            %PYTHON% "%RECIPE_DIR%nice_extract_targz.py" boost_1_77_0.tar.gz doc/html
+            %PYTHON% "%RECIPE_DIR%get_boost.py" "1.77.0"
             if errorlevel 1 exit /b 1
         )
 
@@ -52,8 +40,13 @@ if not exist ".\boost\version.hpp" (
 
 %PYTHON% -c "fp = open('boost\\version.hpp');exit(0 if '1_77' in fp.read() else 1);fp.close()"
 if errorlevel 1 (
+<<<<<<< HEAD
     @echo Boost version 1.77 expected
     exit /b
+=======
+    echo Boost version 1.77 expected
+    exit /b 1
+>>>>>>> main
 )
 
 @rem Get the architecture of the python interpreter
@@ -104,7 +97,7 @@ if errorlevel 1 exit /b 5
 b2 --with-regex stage toolset=msvc-%VisualStudioVersion% variant=release link=static threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd define=BOOST_REGEX_NO_FASTCALL -a
 if errorlevel 1 exit /b 5
 
-@echo Installing into %PREFIX%
+echo Install boost libraries into %PREFIX%
 xcopy stage\lib\*.lib %PREFIX%\Library\lib  /y /i /s
 if errorlevel 1 exit /b 6
 xcopy stage\lib\*.dll %PREFIX%\Library\lib  /y /i /s
@@ -113,3 +106,6 @@ xcopy stage\lib\*.dll %PREFIX%\Scripts      /y /i /s
 if errorlevel 1 exit /b 6
 xcopy boost %PREFIX%\Library\include\boost  /y /i /s /q
 if errorlevel 1 exit /b 6
+
+echo Build environment ready. Please run "python setup.py build" now.
+
