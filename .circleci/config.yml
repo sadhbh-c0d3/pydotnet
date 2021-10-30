@@ -12,6 +12,9 @@ jobs:
       - checkout
       - run: systeminfo
       - run:
+          name: "Create Python 3.9 env"
+          command: conda create -n py39 python=3.9
+      - run:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
           command: bld.bat
