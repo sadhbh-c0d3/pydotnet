@@ -20,12 +20,10 @@ jobs:
 #          destination: boost_lib
       - run:
           name: "Build Python module"
-          command:  python ./setup.py build
+          command: python ./setup.py build
       - run:
           name: "Build Package"
-          command:  |
-            pip install wheel
-            python ./setup.py bdist_wheel
+          command: python ./setup.py bdist_wheel
       - store_artifacts:
           path: ./build
           destination: build
