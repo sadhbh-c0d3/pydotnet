@@ -46,10 +46,7 @@ import shutil
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
 
-try:
-    from sig.automation.build import Command, VersionResolver
-except ImportError:
-    from build import Command, VersionResolver
+from build import Command, VersionResolver
 
 
 version = VersionResolver.find_version()
@@ -68,23 +65,15 @@ ext = Extension(
 )
 
 
-def force_vs2012():
+def force_vs():
     """
     We don't to build this extension with the usual toolset (e.g. VS 2008
     for Python 2.7). We want to force distutils to pick whatever is in our
-    PATH, which must be VS 2012 or newer. We can't build the extension with
+    PATH, which must be VS 2019 or newer. We can't build the extension with
     the "correct", python-specific toolset, because we're targeting a newer
     .NET framework.
     """
-    if "VS150COMNTOOLS" in os.environ:
-        print("\nUsing MSVC 2017\n")
-        Command.use_toolset(r"%VS150COMNTOOLS%\..\..\VC\Auxiliary\Build\vcvarsall")
-    elif "VS140COMNTOOLS" in os.environ:
-        print("\nUsing MSVC 2015\n")
-        Command.use_toolset(r"%VS140COMNTOOLS%\..\..\VC\vcvarsall")
-    else:
-        print("\nUsing MSVC 2012\n")
-        Command.use_toolset(r"%VS110COMNTOOLS%\..\..\VC\vcvarsall")
+    Command.use_toolset(r"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall")
 
 
 def deploy_boost():
@@ -101,7 +90,7 @@ def deploy_boost():
 
 def main():
 
-    force_vs2012()
+    force_vs()
     deploy_boost()
 
     setup(

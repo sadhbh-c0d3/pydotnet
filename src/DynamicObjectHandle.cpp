@@ -33,11 +33,11 @@ namespace InteropPython {
 			{
 				_typ = GetObject()->GetType();
 			}
-			_flags = BindingFlags::Instance;
+			_flags = (int)BindingFlags::Instance;
 		}
 		else
 		{
-			_flags = BindingFlags::Static;
+			_flags = (int)BindingFlags::Static;
 		}
 	}
 
@@ -96,9 +96,10 @@ namespace InteropPython {
 		}
 
 		System::Object ^obj = GetObject();
+		BindingFlags flags = (BindingFlags)_flags;
 
 		array<MemberInfo ^> ^pi = _typ->GetMember(
-			gcnew System::String(name), _flags | BindingFlags::Public | BindingFlags::FlattenHierarchy);
+			gcnew System::String(name), flags | BindingFlags::Public | BindingFlags::FlattenHierarchy );
 
 		if (pi == nullptr || pi->Length < 1)
 		{
@@ -501,7 +502,8 @@ namespace InteropPython {
 			obj = _typ;
 		}
 
-		array<MemberInfo ^> ^properties = _typ->GetMembers(_flags | BindingFlags::Public | BindingFlags::FlattenHierarchy);
+		BindingFlags flags = (BindingFlags)_flags;
+		array<MemberInfo ^> ^properties = _typ->GetMembers(flags | BindingFlags::Public | BindingFlags::FlattenHierarchy);
 
 		msclr::interop::marshal_context context;
 
