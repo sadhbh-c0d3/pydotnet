@@ -25,5 +25,5 @@ jobs:
           name: "Build Package"
           command: python ./setup.py bdist_wheel
       - store_artifacts:
-          path: ./build
-          destination: build
+          path: ./dist
+          destination: dist
