@@ -14,7 +14,9 @@ jobs:
       - run:
           name: "Build Dependencies"
           working_directory: libs/dotnet-dev 
-          command: bld.bat
+          command: |
+            wget "https://boostorg.jfrog.io/ui/api/v1/download?repoKey=main&path=release%252F1.77.0%252Fsource%252Fboost_1_77_0.tar.gz"
+            tar -xzf "download?repoKey=main&path=release%2F1.77.0%2Fsource%2Fboost_1_77_0.tar.gz"
 #      - run:
 #          name: "Build Python module"
 #          shell: cmd.exe
