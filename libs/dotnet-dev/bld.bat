@@ -107,9 +107,9 @@ echo Building Boost.Python : toolset=msvc-%VisualStudioVersion% address-model=%B
 b2 --with-python stage toolset=msvc-%VisualStudioVersion% variant=release link=shared threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd -a
 if errorlevel 1 exit /b 5
 
-echo Building Boost.Regex : toolset=msvc-%VisualStudioVersion% address-model=%BITNESS%
-b2 --with-regex stage toolset=msvc-%VisualStudioVersion% variant=release link=static threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd define=BOOST_REGEX_NO_FASTCALL -a
-if errorlevel 1 exit /b 5
+REM echo Building Boost.Regex : toolset=msvc-%VisualStudioVersion% address-model=%BITNESS%
+REM b2 --with-regex stage toolset=msvc-%VisualStudioVersion% variant=release link=static threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd define=BOOST_REGEX_NO_FASTCALL -a
+REM if errorlevel 1 exit /b 5
 
 echo Fixing msvc version in filenames
 %PYTHON% "%RECIPE_DIR%\msvcverfix.py" stage\lib

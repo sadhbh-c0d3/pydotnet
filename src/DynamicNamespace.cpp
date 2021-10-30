@@ -64,8 +64,8 @@ namespace InteropPython {
 
 	void DynamicNamespace::ImportTypesInto(boost::python::object &targetNamespace, const boost::python::object &names) const
 	{
-		static const std::string patternString("[A-Za-z][A-Za-z0-9_]*(`[0-9]+)?");
-		static const boost::regex pattern(patternString);
+		//static const std::string patternString("[A-Za-z][A-Za-z0-9_]*(`[0-9]+)?");
+		//static const boost::regex pattern(patternString);
 
 		for (auto t = DynamicTypesCache::GetInstance().Types.cbegin(); t != DynamicTypesCache::GetInstance().Types.cend(); ++t)
 		{
@@ -76,12 +76,17 @@ namespace InteropPython {
 			{
 				std::string name = ConvertToUnmanaged(typ->Name);
 
-				if (!boost::regex_match(name, pattern))
-				{
-					// Filter out names that are not user defined symbols, e.g. '<>c__DisplayClass1already'
-					PYDOTNET_DYNAMICMETHOD_PRINT_DEBUG(name + std::string(" does not match ") + patternString);
+				// if (!boost::regex_match(name, pattern))
+				// {
+				// 	// Filter out names that are not user defined symbols, e.g. '<>c__DisplayClass1already'
+				// 	PYDOTNET_DYNAMICMETHOD_PRINT_DEBUG(name + std::string(" does not match ") + patternString);
+				// 	continue;
+				// }
+				//
+				if (name.find("<") == 0){ 
 					continue;
 				}
+
 
 				if (t->first.find("`") != std::string::npos)
 				{
