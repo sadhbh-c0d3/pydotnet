@@ -18,7 +18,7 @@ def download(url, file_name):
         file_size = get_contentlength(u)
         print("Downloading: %s Bytes: %s" % (file_name, file_size))
         file_size_dl = 0
-        block_sz = 8192
+        block_sz = 64*1024
         while True:
             buffer = u.read(block_sz)
             if not buffer:
