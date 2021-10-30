@@ -40,13 +40,8 @@ if not exist ".\boost\version.hpp" (
 
 %PYTHON% -c "fp = open('boost\\version.hpp');exit(0 if '1_77' in fp.read() else 1);fp.close()"
 if errorlevel 1 (
-<<<<<<< HEAD
-    @echo Boost version 1.77 expected
-    exit /b
-=======
     echo Boost version 1.77 expected
     exit /b 1
->>>>>>> main
 )
 
 @rem Get the architecture of the python interpreter
