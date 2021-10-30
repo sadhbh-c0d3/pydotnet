@@ -5,6 +5,8 @@ orbs:
 
 jobs:
   build:
+    environment:
+      PYTHON: C:\tools\miniconda3\envs\py39\python.exe
     executor:
       name: win/default
       shell: cmd.exe
@@ -17,19 +19,10 @@ jobs:
       - run:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
-          environment:
-            PYTHON: C:\tools\miniconda3\envs\py39\python.exe
           command: bld.bat
       - run:
-          name: "Build Python module"
-          environment:
-            PYTHON: C:\tools\miniconda3\envs\py39\python.exe
-          command: $PYTHON ./setup.py build
-      - run:
-          name: "Build Package"
-          environment:
-            PYTHON: C:\tools\miniconda3\envs\py39\python.exe
-          command: $PYTHON ./setup.py bdist_wheel
+          name: "Build PyDotnet Wheel"
+          command: build_wheel.bat
       - store_artifacts:
           path: ./dist
           destination: dist
