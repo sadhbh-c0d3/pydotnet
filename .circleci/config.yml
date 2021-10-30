@@ -13,8 +13,11 @@ jobs:
 #      - run: systeminfo
       - run:
           name: "Build Dependencies"
-          working_directory: libs/dotnet-dev 
+          working_directory: ./libs/dotnet-dev 
           command: bld.bat
+      - store_artifacts:
+          path: ./libs/dotnet-dev/boost_1_77_0/stage/lib
+          destination: boost_lib
 #      - run:
 #          name: "Build Python module"
 #          shell: cmd.exe

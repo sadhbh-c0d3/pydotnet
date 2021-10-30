@@ -94,7 +94,7 @@ b2 --with-regex stage toolset=msvc-%VisualStudioVersion% variant=release link=st
 if errorlevel 1 exit /b 5
 
 
-REM Install
+echo Install boost libraries into %PREFIX%
 xcopy stage\lib\*.lib %PREFIX%\Library\lib  /y /i /s
 if errorlevel 1 exit /b 6
 xcopy stage\lib\*.dll %PREFIX%\Library\lib  /y /i /s
@@ -103,3 +103,6 @@ xcopy stage\lib\*.dll %PREFIX%\Scripts      /y /i /s
 if errorlevel 1 exit /b 6
 xcopy boost %PREFIX%\Library\include\boost  /y /i /s /q
 if errorlevel 1 exit /b 6
+
+echo Build environment ready. Please run "python setup.py build" now.
+
