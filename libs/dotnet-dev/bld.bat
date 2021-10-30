@@ -1,3 +1,6 @@
+echo Environment
+set
+
 if not defined PYTHON (
     set PYTHON=python
 )
