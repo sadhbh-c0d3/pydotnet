@@ -11,7 +11,7 @@ jobs:
       python-env:
         type: string
     environment:
-      PYTHON: C:\tools\miniconda3\envs\<< parameters.python-env >>\python.exe
+      PYTHON: "C:\\tools\\miniconda3\\envs\\<< parameters.python-env >>\\python.exe"
     executor:
       name: win/default
       shell: cmd.exe
