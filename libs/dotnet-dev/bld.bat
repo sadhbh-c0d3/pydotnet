@@ -2,7 +2,7 @@ if not defined PYTHON (
     set PYTHON=python
 )
 
-@echo Using PYTHON=%PYTHON%
+echo Using PYTHON=%PYTHON%
 
 if not defined CONDA_BUILD (
 
@@ -14,9 +14,9 @@ if not defined CONDA_BUILD (
 
     set RECIPE_DIR=%~dp0
 
-    @echo Using RECIPE_DIR=%RECIPE_DIR%
+    echo Using RECIPE_DIR=%RECIPE_DIR%
 
-    @rem Download and extract boost
+    REM Download and extract boost
     if exist "..\dotnet-dev" (
         rem --- Then we are running bld.bat from where it's located ---
 
@@ -34,7 +34,7 @@ if not defined CONDA_BUILD (
 rem -- exit /b 1
 
 if not exist ".\boost\version.hpp" (
-    @echo Need to run this from boost root folder.
+    echo Need to run this from boost root folder.
     exit /b 1
 )
 
@@ -44,32 +44,36 @@ if errorlevel 1 (
     exit /b 1
 )
 
-@rem Get the architecture of the python interpreter
+REM Get the architecture of the python interpreter
 for /f %%c in ('%PYTHON% -c "import os; print(os.environ[\"PROCESSOR_ARCHITECTURE\"])"') do set ARCH=%%c
 if errorlevel 1 exit /b 1
 
 for /f %%d in ('%PYTHON% -c "import platform; print(platform.architecture()[0][:2])"') do set BITNESS=%%d
 if errorlevel 1 exit /b 1
 
-@echo Using PYTHON=%PYTHON%
-@echo Using ARCH=%ARCH%
-@echo Using BITNESS=%BITNESS%
-@echo Using PY_VER=%PY_VER%
+echo Using ARCH=%ARCH%
+echo Using BITNESS=%BITNESS%
 
-@rem This needs to point to where vcvarsall.bat are installed.
-@rem call "%VSINSTALLDIR%VC\Auxiliary\Build\vcvarsall.bat" %ARCH%
+if not defined VisualStudioVersion (
+    if defined VS150COMNTOOLS (
+        call "%VS150COMNTOOLS%\..\..\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%
+    ) else (
+       if defined VS140COMNTOOLS (
+           call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
+       ) else (
+           call "%VS110COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
+       )
+    )
+    if errorlevel 1 exit /b 2
+)
 
-@echo Using VSCMD_ARG_HOST_ARCH=%VSCMD_ARG_HOST_ARCH%
-@echo Using VSCMD_ARG_TGT_ARCH=%VSCMD_ARG_TGT_ARCH%
-@echo Using VisualStudioVersion=%VisualStudioVersion%
+echo Using VisualStudioVersion=%VisualStudioVersion%
 
-@rem Confirm all good (ENTER) or break now (CTRL-C)
-pause
 
 set MSSdk=1
 set DISTUTILS_USE_SDK=1
 
-@rem Build
+REM Build
 call bootstrap
 if errorlevel 1 exit /b 3
 
@@ -81,16 +85,14 @@ if errorlevel 1 exit /b 4
 %PYTHON% "%RECIPE_DIR%\configure.py" >> %JAMCONF%
 if errorlevel 1 exit /b 4
 
-@echo Contents of %JAMCONF%
+echo Contents of %JAMCONF%
 type %JAMCONF%
 
-@echo Building Boost.Python
 b2 --with-python stage toolset=msvc-%VisualStudioVersion% variant=release link=shared threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd -a
 if errorlevel 1 exit /b 5
-
-@echo Building Boost.Regex
 b2 --with-regex stage toolset=msvc-%VisualStudioVersion% variant=release link=static threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd define=BOOST_REGEX_NO_FASTCALL -a
 if errorlevel 1 exit /b 5
+
 
 echo Install boost libraries into %PREFIX%
 xcopy stage\lib\*.lib %PREFIX%\Library\lib  /y /i /s
