@@ -31,7 +31,31 @@ jobs:
           destination: dist
 
 workflows:
+  build_py27:
+    jobs:
+      - build:
+          python-version: "2.7"
+  build_py35:
+    jobs:
+      - build:
+          python-version: "3.5"
+  build_py36:
+    jobs:
+      - build:
+          python-version: "3.6"
+  build_py37:
+    jobs:
+      - build:
+          python-version: "3.7"
+  build_py38:
+    jobs:
+      - build:
+          python-version: "3.8"
   build_py39:
     jobs:
       - build:
           python-version: "3.9"
+  build_py310:
+    jobs:
+      - build:
+          python-version: "3.10"
