@@ -20,24 +20,12 @@ if not defined CONDA_BUILD (
     if exist "..\dotnet-dev" (
         rem --- Then we are running bld.bat from where it's located ---
 
-        if not exist ".\boost_1_76_0" (
-            rem --- Let's download boost 1.76 ---
-
-            rem === The nice_download.py and nice_extract_targz.py show progress, while download.py doesn't ===
-            rem === However nice_download.py may not work on PyPy as it uses urllib2 ===
-            rem === Let's move that to 'download_boost.bat' maybe? ===
-
-            if not exist ".\boost_1_76_0.tar.gz" (
-                %PYTHON% "%RECIPE_DIR%nice_download.py" "https://boostorg.jfrog.io/ui/api/v1/download?repoKey=main&path=release%%252F1.76.0%%252Fsource%%252Fboost_1_76_0.tar.gz" boost_1_76_0.tar.gz
-                if errorlevel 1 exit /b 1
-            )
-
-            rem For some reason error occurs when extracting one of the html docs. We don't really need them anyways
-            %PYTHON% "%RECIPE_DIR%nice_extract_targz.py" boost_1_76_0.tar.gz doc/html
+        if not exist ".\boost_1_77_0" (
+            %PYTHON% "%RECIPE_DIR%get_boost.py" "1.77.0"
             if errorlevel 1 exit /b 1
         )
 
-        cd boost_1_76_0
+        cd boost_1_77_0
         if errorlevel 1 exit /b 1
     )
 
@@ -50,9 +38,9 @@ if not exist ".\boost\version.hpp" (
     exit /b 1
 )
 
-%PYTHON% -c "fp = open('boost\\version.hpp');exit(0 if '1_76' in fp.read() else 1);fp.close()"
+%PYTHON% -c "fp = open('boost\\version.hpp');exit(0 if '1_77' in fp.read() else 1);fp.close()"
 if errorlevel 1 (
-    echo Boost version 1.76 expected
+    echo Boost version 1.77 expected
     exit /b 1
 )
 
