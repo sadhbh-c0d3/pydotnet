@@ -8,8 +8,6 @@ jobs:
     executor:
       name: win/default
       shell: cmd.exe
-      environment:
-        PYTHON: C:\tools\miniconda3\envs\py39\python.exe
     steps:
       - checkout
       - run: systeminfo
@@ -19,6 +17,8 @@ jobs:
       - run:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
+          environment:
+            PYTHON: C:\tools\miniconda3\envs\py39\python.exe
           command: bld.bat
 #      - store_artifacts:
 #          path: ./libs/dotnet-dev/boost_1_77_0/stage/lib
