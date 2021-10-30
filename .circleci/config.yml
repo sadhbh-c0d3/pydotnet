@@ -30,8 +30,8 @@ jobs:
 workflows:
   build_py39:
     jobs:
-      - build_wheel
-        requires:
-          - install_py39
-        environment:
-          PYTHON: C:\tools\miniconda3\envs\py39\python.exe
+      - build_wheel:
+          requires:
+            - install_py39
+          environment:
+            PYTHON: C:\tools\miniconda3\envs\py39\python.exe
