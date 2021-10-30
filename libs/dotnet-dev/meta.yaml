@@ -1,10 +1,10 @@
 package:
   name: dotnet-dev
-  version: 1.60.0
+  version: 1.77.0
 
 source:
-  fn: boost-1.60.0.tar.gz
-  url: http://netix.dl.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.gz
+  fn: boost_1_77_0.tar.gz
+  url: https://boostorg.jfrog.io/ui/native/main/release/1.77.0/source/boost_1_77_0.tar.gz
 
 
 requirements:
@@ -16,4 +16,4 @@ requirements:
 about:
   home: http://boost.org
   license: Boost
-  summary: "Static and runtime Boost libraries for PyDotnet, built with VS 2012"
+  summary: "Static and runtime Boost libraries for PyDotnet, built with VS"

@@ -18,6 +18,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-__version__ = '1.3.1.{BUILD}'
+__version__ = '1.4.1.{BUILD}'
 __revision__ = '{REVISION}'
 

@@ -5,19 +5,54 @@ orbs:
 
 jobs:
   build:
+    parameters:
+      python-version:
+        type: string
+    environment:
+      PYTHON: "C:\\tools\\miniconda3\\envs\\pydotnet\\python.exe"
     executor:
       name: win/default
       shell: cmd.exe
     steps:
       - checkout
-#      - run: systeminfo
+      - run: systeminfo
+      - run:
+          name: "Install Python << parameters.python-version >>"
+          command: conda create -n pydotnet python=<< parameters.python-version >>
       - run:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
           command: bld.bat
-      - store_artifacts:
-          path: ./libs/dotnet-dev/boost_1_77_0/stage/lib
-          destination: boost_lib
       - run:
-          name: "Build Python module"
-          command:  python ./setup.py build
+          name: "Build Wheel"
+          command: build_wheel.bat
+      - store_artifacts:
+          path: ./dist
+          destination: dist
+
+workflows:
+  build_py27:
+    jobs:
+      - build:
+          python-version: "2.7"
+  build_py35:
+    jobs:
+      - build:
+          python-version: "3.5"
+  build_py36:
+    jobs:
+      - build:
+          python-version: "3.6"
+  build_py37:
+    jobs:
+      - build:
+          python-version: "3.7"
+  build_py38:
+    jobs:
+      - build:
+          python-version: "3.8"
+  build_py39:
+    jobs:
+      - build:
+          python-version: "3.9"
+

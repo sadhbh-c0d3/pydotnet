@@ -24,7 +24,7 @@
 #pragma unmanaged
 
 #include <boost/function.hpp>
-#include <boost/algorithm/string_regex.hpp>
+//#include <boost/algorithm/string_regex.hpp>
 #include <boost/concept_check.hpp>
 #include <boost/python.hpp>
 #include <boost/python/slice.hpp>
@@ -50,7 +50,7 @@ namespace InteropPython {
 
 	inline std::string FriendlyTypename(const std::string& s)
 	{
-		return boost::regex_replace(s, boost::regex("([,<])"), "\\1\n\t");
+		return s;//boost::regex_replace(s, boost::regex("([,<])"), "\\1\n\t");
 	}
 
 	template<typename T>

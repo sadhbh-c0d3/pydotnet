@@ -277,7 +277,8 @@ namespace InteropPython {
 
 		bool IsStatic()
 		{
-			return _flags.HasFlag(BindingFlags::Static);
+			BindingFlags flags = (BindingFlags)_flags;
+			return flags.HasFlag(BindingFlags::Static);
 		}
 
 		int GetHashCode() const
@@ -370,7 +371,7 @@ namespace InteropPython {
 
 	private:
 		gcroot<System::Type ^> _typ;
-		BindingFlags _flags;
+		int _flags;
 		std::map<std::string, boost::python::object> _cache;
 		static boost::python::object _getAttrHook;
 		static boost::python::object _getAttrBase;

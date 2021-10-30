@@ -114,7 +114,7 @@ namespace InteropPython {
 				int index = maybeIndex;
 				PYDOTNET_DYNAMICMETHOD_PRINT_WITH_ARGS_DEBUG("Getting overload at position ", index);
 
-				if (index < 0 || index >= _invokers.size())
+				if (index < 0 || index >= (int)_invokers.size())
 				{
 					throw_index_error();
 					throw std::runtime_error("Index out of range");
