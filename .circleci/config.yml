@@ -24,12 +24,12 @@ jobs:
           name: "Build Python module"
           environment:
             PYTHON: C:\tools\miniconda3\envs\py39\python.exe
-          command: %PYTHON% ./setup.py build
+          command: $PYTHON ./setup.py build
       - run:
           name: "Build Package"
           environment:
             PYTHON: C:\tools\miniconda3\envs\py39\python.exe
-          command: %PYTHON% ./setup.py bdist_wheel
+          command: $PYTHON ./setup.py bdist_wheel
       - store_artifacts:
           path: ./dist
           destination: dist
