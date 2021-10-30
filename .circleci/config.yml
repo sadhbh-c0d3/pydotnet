@@ -5,11 +5,19 @@ orbs:
 
 jobs:
   install_py39:
+    executor:
+      name: win/default
+      shell: cmd.exe    
     steps:
       - run:
           name: "Install Python 3.9"
           command: conda create -n py39 python=3.9
   build_wheel:
+    parameters:
+      python-path:
+        type: string
+    environment:
+      PYTHON: << parameters.python-path >>
     executor:
       name: win/default
       shell: cmd.exe
@@ -30,8 +38,8 @@ jobs:
 workflows:
   build_py39:
     jobs:
+      - install_py39
       - build_wheel:
           requires:
             - install_py39
-          environment:
-            PYTHON: C:\tools\miniconda3\envs\py39\python.exe
+          python-path: C:\tools\miniconda3\envs\py39\python.exe
