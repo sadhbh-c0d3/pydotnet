@@ -8,10 +8,8 @@ jobs:
     parameters:
       python-version:
         type: string
-      python-env:
-        type: string
     environment:
-      PYTHON: "C:\\tools\\miniconda3\\envs\\<< parameters.python-env >>\\python.exe"
+      PYTHON: "C:\\tools\\miniconda3\\envs\\pydotnet\\python.exe"
     executor:
       name: win/default
       shell: cmd.exe
@@ -20,7 +18,7 @@ jobs:
       - run: systeminfo
       - run:
           name: "Install Python << parameters.python-version >>"
-          command: conda create -n << parameters.python-env >> python=<< parameters.python-version >>
+          command: conda create -n pydotnet python=<< parameters.python-version >>
       - run:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
@@ -37,4 +35,3 @@ workflows:
     jobs:
       - build:
           python-version: "3.9"
-          python-env: py39 
