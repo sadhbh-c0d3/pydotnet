@@ -3,7 +3,7 @@ import sys
 import glob
 
 def fix_file_msvc_version(path):
-   os.rename(path, path.replace('vc150','vc141').replace('vc160','142'))
+   os.rename(path, path.replace('vc150','vc141').replace('vc160','vc142'))
 
 
 def fix_folder_msvc_version(dirpath):
