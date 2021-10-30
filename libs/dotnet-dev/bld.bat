@@ -19,11 +19,11 @@ if not defined CONDA_BUILD (
 
     echo Using RECIPE_DIR=%RECIPE_DIR%
 
-    REM Download and extract boost
     if exist "..\dotnet-dev" (
         rem --- Then we are running bld.bat from where it's located ---
 
         if not exist ".\boost_1_77_0" (
+            REM Download and extract boost
             %PYTHON% "%RECIPE_DIR%get_boost.py" "1.77.0"
             if errorlevel 1 exit /b 1
         )
@@ -58,25 +58,35 @@ echo Using ARCH=%ARCH%
 echo Using BITNESS=%BITNESS%
 
 if not defined VisualStudioVersion (
-    if defined VS150COMNTOOLS (
-        call "%VS150COMNTOOLS%\..\..\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%
-    ) else (
-       if defined VS140COMNTOOLS (
-           call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
-       ) else (
-           call "%VS110COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
-       )
-    )
-    if errorlevel 1 exit /b 2
+   echo Need to run this from Developer Command Prompt for VS2019.
+   exit /b 3
 )
 
-echo Using VisualStudioVersion=%VisualStudioVersion%
+REM if not defined VisualStudioVersion (
+REM     if defined VS160COMNTOOLS (
+REM         call "%VS160COMNTOOLS%\..\..\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%
+REM     ) else (
+REM        if defined VS150COMNTOOLS (
+REM            call "%VS150COMNTOOLS%\..\..\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%
+REM        ) else (
+REM           if defined VS140COMNTOOLS (
+REM               call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
+REM           ) else (
+REM               call "%VS110COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
+REM           )
+REM        )
+REM     )
+REM     if errorlevel 1 exit /b 2
+REM )
 
 
 set MSSdk=1
 set DISTUTILS_USE_SDK=1
 
-REM Build
+echo MSVC: toolset=msvc-%VisualStudioVersion% address-model=%BITNESS%
+echo Python: %PY_VER% : %PREFIX%
+
+echo Bootstrapping Boost
 call bootstrap
 if errorlevel 1 exit /b 3
 
@@ -91,11 +101,19 @@ if errorlevel 1 exit /b 4
 echo Contents of %JAMCONF%
 type %JAMCONF%
 
+echo Building Boost.Python : toolset=msvc-%VisualStudioVersion% address-model=%BITNESS%
 b2 --with-python stage toolset=msvc-%VisualStudioVersion% variant=release link=shared threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd -a
 if errorlevel 1 exit /b 5
+
+echo Building Boost.Regex : toolset=msvc-%VisualStudioVersion% address-model=%BITNESS%
 b2 --with-regex stage toolset=msvc-%VisualStudioVersion% variant=release link=static threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd define=BOOST_REGEX_NO_FASTCALL -a
 if errorlevel 1 exit /b 5
 
+echo Fixing msvc version in filenames
+%PYTHON% "%RECIPE_DIR%\msvcverfix.py" stage\lib
+
+echo Staged libs
+dir stage\lib
 
 echo Install boost libraries into %PREFIX%
 xcopy stage\lib\*.lib %PREFIX%\Library\lib  /y /i /s
