@@ -57,6 +57,8 @@ if errorlevel 1 exit /b 1
 echo Using ARCH=%ARCH%
 echo Using BITNESS=%BITNESS%
 
+call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%
+
 if not defined VisualStudioVersion (
    echo Need to run this from Developer Command Prompt for VS2019.
    exit /b 3
