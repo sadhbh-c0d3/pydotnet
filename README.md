@@ -3,6 +3,13 @@
 
 **NOTE** Works only on Windows due to integration with Microsoft .NET environment
 
+## Videos
+
+- [Loom: PyDotnet - Basics](https://www.loom.com/share/a0fed0b141a54e6ead4a130009e29f89)
+- [Loom: Pydotnet - Generic Extension Methods](https://www.loom.com/share/6274a9bfc88f4f369907285b420d2730)
+
+Stay tuned! More to come...
+
 ## Usage
 
 #### Example
