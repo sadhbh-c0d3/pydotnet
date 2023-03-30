@@ -3,6 +3,8 @@
 
 **NOTE** Works only on Windows due to integration with Microsoft .NET environment
 
+[.NetCore C++/CLI for Linux and MacOS - Is not supported](https://developercommunity.visualstudio.com/t/netcore-ccli-for-linux-and-macos/873014)
+
 ## Videos
 
 - [Loom: PyDotnet - Basics](https://www.loom.com/share/a0fed0b141a54e6ead4a130009e29f89)
