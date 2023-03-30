@@ -2,8 +2,7 @@
 (CPython) &lt;==> (.NET) direct interop via embedded CLR (.pyd) through Boost.Python
 
 **NOTE** Works only on Windows due to integration with Microsoft .NET environment
-
-[.NetCore C++/CLI for Linux and MacOS - Is not supported](https://developercommunity.visualstudio.com/t/netcore-ccli-for-linux-and-macos/873014)
+([.NetCore C++/CLI for Linux and MacOS - Is not supported](https://developercommunity.visualstudio.com/t/netcore-ccli-for-linux-and-macos/873014))
 
 ## Videos
 
