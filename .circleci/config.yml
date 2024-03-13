@@ -16,15 +16,13 @@ jobs:
     steps:
       - checkout
       - run: systeminfo
+      - run: choco install python --version=<< parameters.python-version >> --force -y  /norestart
       - run:
-          name: Install and set Python << parameters.python-version >>
-          shell: powershell.exe
+          name: Installed Python version verification
+          shell: bash
           command: |
-            choco install pyenv-win --force
-            refreshenv
-            pyenv install << parameters.python-version >>
-            pyenv global << parameters.python-version >>
-            $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
+            py -3.9 -m venv venv39
+            source ./venv39/Scripts/activate
             python --version
       - run:
           name: "Build Dependencies"
