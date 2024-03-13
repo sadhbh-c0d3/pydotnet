@@ -2,15 +2,14 @@ version: 2.1
 
 orbs:
   win: circleci/windows@2.2.0
-  python: circleci/python@2.0.3
 
 jobs:
   build:
     parameters:
       python-version:
         type: string
-    environment:
-      PYTHON: "C:\\tools\\miniconda3\\envs\\pydotnet\\python.exe"
+    #environment:
+    #  PYTHON: "C:\\tools\\miniconda3\\envs\\pydotnet\\python.exe"
     executor:
       name: win/default
       shell: cmd.exe
@@ -18,8 +17,15 @@ jobs:
       - checkout
       - run: systeminfo
       - run:
-          name: "Install Python << parameters.python-version >>"
-          command: conda create -n pydotnet python=<< parameters.python-version >>
+          name: Install and set Python << parameters.python-version >>
+          shell: powershell.exe
+          command: |
+            choco install pyenv-win --force
+            refreshenv
+            pyenv install << parameters.python-version >>
+            pyenv global << parameters.python-version >>
+            $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
+            python --version
       - run:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
