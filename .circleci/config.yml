@@ -56,4 +56,3 @@ workflows:
     jobs:
       - build:
           python-version: "3.9"
-
