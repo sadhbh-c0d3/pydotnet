@@ -29,10 +29,14 @@ jobs:
       - run:
           name: "Build Dependencies"
           working_directory: ./libs/dotnet-dev 
-          command: bld.bat
+          command: |
+            $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
+            bld.bat
       - run:
           name: "Build Wheel"
-          command: build_wheel.bat
+          command: |
+            $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
+            build_wheel.bat
       - store_artifacts:
           path: ./dist
           destination: dist
@@ -62,4 +66,4 @@ workflows:
   build_py39:
     jobs:
       - build:
-          python-version: "3.9"
+          python-version: "3.9.17"
