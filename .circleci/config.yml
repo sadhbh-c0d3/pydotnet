@@ -8,6 +8,8 @@ jobs:
     parameters:
       python-version:
         type: string
+      python-venv-name:
+        type: string
     #environment:
     #  PYTHON: "C:\\tools\\miniconda3\\envs\\pydotnet\\python.exe"
     executor:
@@ -21,8 +23,8 @@ jobs:
           name: Installed Python version verification
           shell: bash
           command: |
-            py -3.9 -m venv venv39
-            source ./venv39/Scripts/activate
+            py -<< parameters.python-version >> -m venv << parameters.python-venv-name >>
+            source ./<< parameters.python-venv-name >>/Scripts/activate
             python --version
       - run:
           name: "Build Dependencies"
@@ -64,4 +66,5 @@ workflows:
   build_py39:
     jobs:
       - build:
-          python-version: "3.9.17"
+          python-version: "3.9"
+          python-venv-name: "venv39"
