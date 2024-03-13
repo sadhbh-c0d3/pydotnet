@@ -26,6 +26,7 @@ jobs:
             py -<< parameters.python-version >> -m venv << parameters.python-venv-name >>
             source ./<< parameters.python-venv-name >>/Scripts/activate
             python --version
+            pip install wheel
             ./bld.bat
             ./build_wheel.bat
       - store_artifacts:
