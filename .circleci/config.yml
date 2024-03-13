@@ -20,23 +20,14 @@ jobs:
       - run: systeminfo
       #- run: choco install python --version=<< parameters.python-version >> --force -y  /norestart
       - run:
-          name: Installed Python version verification
+          name: Build PAckage for Python << parameters.python-version >> Env << parameters.python-venv-name >>
           shell: bash
           command: |
             py -<< parameters.python-version >> -m venv << parameters.python-venv-name >>
             source ./<< parameters.python-venv-name >>/Scripts/activate
             python --version
-      - run:
-          name: "Build Dependencies"
-          working_directory: ./libs/dotnet-dev 
-          command: |
-            $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
-            bld.bat
-      - run:
-          name: "Build Wheel"
-          command: |
-            $env:Path = 'C:\Users\circleci\.pyenv\pyenv-win\bin;C:\Users\circleci\.pyenv\pyenv-win\shims;' + $env:Path
-            build_wheel.bat
+            ./bld.bat
+            ./build_wheel.bat
       - store_artifacts:
           path: ./dist
           destination: dist
