@@ -27,7 +27,7 @@ jobs:
             source ./<< parameters.python-venv-name >>/Scripts/activate
             python --version
             pip install wheel
-            cd ./lib/dotnet_dev && ./bld.bat
+            cd ./libs/dotnet-dev && ./bld.bat
             ./build_wheel.bat
       - store_artifacts:
           path: ./dist
