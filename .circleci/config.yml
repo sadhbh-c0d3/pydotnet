@@ -20,11 +20,11 @@ jobs:
       - run:
           name: Build Dependencies
           command: |
-            cd ./libs/dotnet-dev && ./bld.bat
+            cd .\libs\dotnet-dev && .\bld.bat
       - run:
           name: Build Wheel
           command: |
-            ./build_wheel.bat
+            .\build_wheel.bat
       - store_artifacts:
           path: ./dist
           destination: dist
