@@ -53,7 +53,7 @@
 @echo Using BITNESS=%BITNESS%
 
 
-call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall"
+call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall" amd64
 
 @if not defined VisualStudioVersion (
     echo Need to run this from Developer Command Prompt for Visual Studio.
