@@ -1,14 +1,20 @@
 # PyDotNET (pip: dotnet)
 (CPython) &lt;==> (.NET) direct interop via embedded CLR (.pyd) through Boost.Python
 
-**NOTE** Works only on Windows due to integration with Microsoft .NET environment
+### Windows
+
+PyDotnet only works on Windows due to integration with Microsoft .NET environment
 ([.NetCore C++/CLI for Linux and MacOS - Is not supported](https://developercommunity.visualstudio.com/t/netcore-ccli-for-linux-and-macos/873014))
 
-Linux users may try:
-- [Windows-Docker-Machine](https://github.com/StefanScherer/windows-docker-machine#windows-docker-machine)
+Works natively on Windows 64-Bit (x86), and also on Windows on ARM64 in AMD64 emulation mode.
 
-Mac M2 users may try:
-- [Parallels® Desktop 18 for Mac](https://www.parallels.com/eu/products/desktop/)
+### Mac
+
+Works well on Windows on ARM64 on Apple Silicon: [Parallels® Desktop 18 for Mac](https://www.parallels.com/eu/products/desktop/)
+
+### Linux
+
+Haven't tested, but this might work: [Windows-Docker-Machine](https://github.com/StefanScherer/windows-docker-machine#windows-docker-machine)
 
 
 ## Videos
