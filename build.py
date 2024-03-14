@@ -60,10 +60,10 @@ class Command(setuptools.Command):
                        the toolset
         @type  vcvars: str
         """
-        from distutils import msvc9compiler
+        from distutils import msvccompiler
 
-        plat = msvc9compiler.PLAT_TO_VCVARS[msvc9compiler.get_platform()]
-        c = subprocess.check_output('call "{0}" {1} && set'.format(vcvars, plat), shell=True)
+        arch = msvccompiler.get_build_architecture().lower()
+        c = subprocess.check_output('call "{0}" {1} && set'.format(vcvars, arch), shell=True)
 
         for line in c.decode().splitlines():
             var, sep, value = line.partition("=")

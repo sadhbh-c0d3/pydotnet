@@ -67,13 +67,13 @@ ext = Extension(
 
 def force_vs():
     """
-    We don't to build this extension with the usual toolset (e.g. VS 2008
+    We don't to build this extension with the usual toolset (e.g. VS 2022
     for Python 2.7). We want to force distutils to pick whatever is in our
-    PATH, which must be VS 2019 or newer. We can't build the extension with
+    PATH, which must be VS 2022 or newer. We can't build the extension with
     the "correct", python-specific toolset, because we're targeting a newer
     .NET framework.
     """
-    Command.use_toolset(r"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall")
+    Command.use_toolset(r"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall")
 
 
 def deploy_boost():

@@ -19,22 +19,8 @@
 # SOFTWARE.
 
 import sys
-import imp
 import types
 from dotnet import PyDotnet as _dotnet
-
-
-class PyDotnetModule(types.ModuleType):
-    def __init__(self, name, doc=None, loader=None, namespace=None):
-        super(PyDotnetModule, self).__init__(name, doc)
-        self.__file__ = 'dotnet:%s' % name
-        self.__path__ = []
-        self.__loader__ = loader
-        self.__namespace__ = namespace
-        self.__all__ = dir(namespace)
-
-    def __getattr__(self, key):
-        return getattr(self.__namespace__, key)
 
 
 __load_namespace_hook = None
@@ -54,45 +40,92 @@ def _namespace_loaded(ns):
         __load_namespace_hook(ns)
 
 
-class PyDotnetLoader(object):
-    def __init__(self, namespace):
-        self.sys = sys
-        self.imp = imp
-        self.namespace = namespace
+class PyDotnetModule(types.ModuleType):
+    def __init__(self, name, doc=None, loader=None, namespace=None):
+        super(PyDotnetModule, self).__init__(name, doc)
+        self.__file__ = 'dotnet:%s' % name
+        self.__path__ = []
+        self.__loader__ = loader
+        self.__namespace__ = namespace
+        self.__all__ = dir(namespace)
+
+    def __getattr__(self, key):
+        return getattr(self.__namespace__, key)
 
 
-    def load_module(self, name):
-        try:
-            return self.sys.modules[name]
-        except KeyError:
-            pass
-        try:
-            target = self.namespace[name]
-        except:
-            raise ImportError('Cannot import %r from %r' % (name, self.namespace))
-        if isinstance(target, _dotnet.Interop.Namespace):
-            module = PyDotnetModule(name, loader=self, namespace=target)
-            module = self.sys.modules.setdefault(name, module)
-            _namespace_loaded(target)
+if sys.version_info.major == 3 and sys.version_info.minor >= 12:
+    # New importlib in Python 3.12
+
+    from importlib.abc import Loader, MetaPathFinder
+    from importlib.util import spec_from_loader
+
+    class PyDotnetMetaFinder(MetaPathFinder):
+        def find_spec(self, fullname, path, target=None):
+            try:
+                namespace = _dotnet.GlobalNamespace[fullname]
+                return spec_from_loader(fullname, PyDotnetLoader(fullname, namespace=namespace))
+            except AttributeError:
+                return None
+            except:
+                raise ImportError('Cannot import %r from %r' % (name, self.namespace))
+
+    class PyDotnetLoader(Loader):
+        def __init__(self, name, namespace):
+            self.name = name
+            self.namespace = namespace
+
+        def create_module(self, spec):
+            module = PyDotnetModule(self.name, loader=self, namespace=self.namespace)
+            _namespace_loaded(self.namespace)
             return module
-        else:
-            return target
 
-    def find_module(self, name, path=None):
-        try:
-            member = self.namespace[name]
-            return self
-        except AttributeError:
-            return None
-        except:
-            raise ImportError('Cannot import %r from %r' % (name, self.namespace))
+        def exec_module(self, module):
+            pass
 
 
-__path__ = []
-sys.meta_path.append(PyDotnetLoader(_dotnet.GlobalNamespace))
+    sys.meta_path.insert(0, PyDotnetMetaFinder())
+
+else:
+    # Deprecated in Python 3.12
+    import imp
+
+    class PyDotnetLoader(object):
+        def __init__(self, namespace):
+            self.sys = sys
+            self.imp = imp
+            self.namespace = namespace
+
+        def load_module(self, name):
+            try:
+                return self.sys.modules[name]
+            except KeyError:
+                pass
+            try:
+                target = self.namespace[name]
+            except:
+                raise ImportError('Cannot import %r from %r' % (name, self.namespace))
+            if isinstance(target, _dotnet.Interop.Namespace):
+                module = PyDotnetModule(name, loader=self, namespace=target)
+                module = self.sys.modules.setdefault(name, module)
+                _namespace_loaded(target)
+                return module
+            else:
+                return target
+
+        def find_module(self, name, path=None):
+            try:
+                member = self.namespace[name]
+                return self
+            except AttributeError:
+                return None
+            except:
+                raise ImportError('Cannot import %r from %r' % (name, self.namespace))
 
 
-del sys
-del imp
-del types
+    __path__ = []
+    sys.meta_path.append(PyDotnetLoader(_dotnet.GlobalNamespace))
+
+    del sys
+    del imp
+    del types
 

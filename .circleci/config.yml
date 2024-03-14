@@ -5,58 +5,31 @@ orbs:
 
 jobs:
   build:
-    parameters:
-      python-version:
-        type: string
-      python-venv-name:
-        type: string
-    #environment:
-    #  PYTHON: "C:\\tools\\miniconda3\\envs\\pydotnet\\python.exe"
     executor:
       name: win/default
       shell: cmd.exe
     steps:
       - checkout
       - run: systeminfo
-      #- run: choco install python --version=<< parameters.python-version >> --force -y  /norestart
+      - run: choco install python --version=3.12.2 --force -y  /norestart
       - run:
-          name: Build PAckage for Python << parameters.python-version >> Env << parameters.python-venv-name >>
-          shell: bash
+          name: Check Python Version
           command: |
-            py -<< parameters.python-version >> -m venv << parameters.python-venv-name >>
-            source ./<< parameters.python-venv-name >>/Scripts/activate
             python --version
             pip install wheel
+      - run:
+          name: Build Dependencies
+          command: |
             cd ./libs/dotnet-dev && ./bld.bat
+      - run:
+          name: Build Wheel
+          command: |
             ./build_wheel.bat
       - store_artifacts:
           path: ./dist
           destination: dist
 
 workflows:
-# Commented out other version to reduce usage off CircleCI
-#  build_py27:
-#    jobs:
-#      - build:
-#          python-version: "2.7"
-#  build_py35:
-#    jobs:
-#      - build:
-#          python-version: "3.5"
-#  build_py36:
-#    jobs:
-#      - build:
-#          python-version: "3.6"
-#  build_py37:
-#    jobs:
-#      - build:
-#          python-version: "3.7"
-#  build_py38:
-#    jobs:
-#      - build:
-#          python-version: "3.8"
-  build_py39:
+  build_default:
     jobs:
-      - build:
-          python-version: "3.9"
-          python-venv-name: "venv39"
+      - build

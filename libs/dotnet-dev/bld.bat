@@ -1,14 +1,13 @@
-echo Environment
-set
+@echo Environment
+@set
 
-if not defined PYTHON (
+@if not defined PYTHON (
     set PYTHON=python
 )
 
-echo Using PYTHON=%PYTHON%
+@echo Using PYTHON=%PYTHON%
 
-if not defined CONDA_BUILD (
-
+@if not defined CONDA_BUILD (
     for /f %%a in ('%PYTHON% -c "import sys; print(sys.prefix)"') do set PREFIX=%%a
     if errorlevel 1 exit /b 1
 
@@ -22,110 +21,82 @@ if not defined CONDA_BUILD (
     if exist "..\dotnet-dev" (
         rem --- Then we are running bld.bat from where it's located ---
 
-        if not exist ".\boost_1_77_0" (
+        if not exist ".\boost_1_84_0" (
             REM Download and extract boost
-            %PYTHON% "%RECIPE_DIR%get_boost.py" "1.77.0"
+            %PYTHON% "%RECIPE_DIR%get_boost.py" "1.84.0"
             if errorlevel 1 exit /b 1
         )
 
-        cd boost_1_77_0
+        cd boost_1_84_0
         if errorlevel 1 exit /b 1
     )
 
 )
 
-rem -- exit /b 1
+@rem -- exit /b 1
 
-if not exist ".\boost\version.hpp" (
+@if not exist ".\boost\version.hpp" (
     echo Need to run this from boost root folder.
     exit /b 1
 )
 
-%PYTHON% -c "fp = open('boost\\version.hpp');exit(0 if '1_77' in fp.read() else 1);fp.close()"
-if errorlevel 1 (
-    echo Boost version 1.77 expected
+@%PYTHON% -c "fp = open('boost\\version.hpp');exit(0 if '1_84' in fp.read() else 1);fp.close()"
+@if errorlevel 1 (
+    echo Boost version 1.84 expected
     exit /b 1
 )
 
-REM Get the architecture of the python interpreter
-for /f %%c in ('%PYTHON% -c "import os; print(os.environ[\"PROCESSOR_ARCHITECTURE\"])"') do set ARCH=%%c
-if errorlevel 1 exit /b 1
+@for /f %%d in ('%PYTHON% -c "import platform; print(platform.architecture()[0][:2])"') do set BITNESS=%%d
+@if errorlevel 1 exit /b 1
 
-for /f %%d in ('%PYTHON% -c "import platform; print(platform.architecture()[0][:2])"') do set BITNESS=%%d
-if errorlevel 1 exit /b 1
+@echo Using ARCH=%ARCH%
+@echo Using BITNESS=%BITNESS%
 
-echo Using ARCH=%ARCH%
-echo Using BITNESS=%BITNESS%
-
-call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%
-
-if not defined VisualStudioVersion (
-   echo Need to run this from Developer Command Prompt for VS2019.
-   exit /b 3
+@if not defined VisualStudioVersion (
+    echo Need to run this from Developer Command Prompt for Visual Studio.
+    exit /b 3
 )
 
-REM if not defined VisualStudioVersion (
-REM     if defined VS160COMNTOOLS (
-REM         call "%VS160COMNTOOLS%\..\..\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%
-REM     ) else (
-REM        if defined VS150COMNTOOLS (
-REM            call "%VS150COMNTOOLS%\..\..\VC\Auxiliary\Build\vcvarsall.bat" %ARCH%
-REM        ) else (
-REM           if defined VS140COMNTOOLS (
-REM               call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
-REM           ) else (
-REM               call "%VS110COMNTOOLS%\..\..\VC\vcvarsall.bat" %ARCH%
-REM           )
-REM        )
-REM     )
-REM     if errorlevel 1 exit /b 2
-REM )
+@set MSSdk=1
+@set DISTUTILS_USE_SDK=1
 
+@echo MSVC %VisualStudioVersion% %BITNESS%
+@echo Python: %PY_VER% : %PREFIX%
 
-set MSSdk=1
-set DISTUTILS_USE_SDK=1
+@echo Bootstrapping Boost
+@call bootstrap
+@if errorlevel 1 exit /b 3
 
-echo MSVC: toolset=msvc-%VisualStudioVersion% address-model=%BITNESS%
-echo Python: %PY_VER% : %PREFIX%
+@set JAMCONF=%HOMEDRIVE%%HOMEPATH%\user-config.jam
 
-echo Bootstrapping Boost
-call bootstrap
-if errorlevel 1 exit /b 3
+@copy /Y tools\build\example\user-config.jam %JAMCONF%
+@if errorlevel 1 exit /b 4
 
-set JAMCONF=%HOMEDRIVE%%HOMEPATH%\user-config.jam
+@%PYTHON% "%RECIPE_DIR%\configure.py" >> %JAMCONF%
+@if errorlevel 1 exit /b 4
 
-copy /Y tools\build\example\user-config.jam %JAMCONF%
-if errorlevel 1 exit /b 4
+@echo Contents of %JAMCONF%
+@type %JAMCONF%
 
-%PYTHON% "%RECIPE_DIR%\configure.py" >> %JAMCONF%
-if errorlevel 1 exit /b 4
+@echo Building Boost.Python : %BITNESS%-bit
+@b2 --with-python stage toolset=msvc variant=release link=shared threading=multi runtime-link=shared architecture=x86 address-model=%BITNESS% cxxflags=/Gd -a
+@if errorlevel 1 exit /b 5
 
-echo Contents of %JAMCONF%
-type %JAMCONF%
-
-echo Building Boost.Python : toolset=msvc-%VisualStudioVersion% address-model=%BITNESS%
-b2 --with-python stage toolset=msvc-%VisualStudioVersion% variant=release link=shared threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd -a
-if errorlevel 1 exit /b 5
-
-REM echo Building Boost.Regex : toolset=msvc-%VisualStudioVersion% address-model=%BITNESS%
-REM b2 --with-regex stage toolset=msvc-%VisualStudioVersion% variant=release link=static threading=multi runtime-link=shared address-model=%BITNESS% cxxflags=/Gd define=BOOST_REGEX_NO_FASTCALL -a
-REM if errorlevel 1 exit /b 5
-
-echo Fixing msvc version in filenames
+@echo Fixing msvc version in filenames
 %PYTHON% "%RECIPE_DIR%\msvcverfix.py" stage\lib
 
-echo Staged libs
-dir stage\lib
+@echo Staged libs
+@dir stage\lib
 
-echo Install boost libraries into %PREFIX%
-xcopy stage\lib\*.lib %PREFIX%\Library\lib  /y /i /s
-if errorlevel 1 exit /b 6
-xcopy stage\lib\*.dll %PREFIX%\Library\lib  /y /i /s
-if errorlevel 1 exit /b 6
-xcopy stage\lib\*.dll %PREFIX%\Scripts      /y /i /s
-if errorlevel 1 exit /b 6
-xcopy boost %PREFIX%\Library\include\boost  /y /i /s /q
-if errorlevel 1 exit /b 6
+@echo Install boost libraries into %PREFIX%
+@xcopy stage\lib\*.lib %PREFIX%\Library\lib  /y /i /s
+@if errorlevel 1 exit /b 6
+@xcopy stage\lib\*.dll %PREFIX%\Library\lib  /y /i /s
+@if errorlevel 1 exit /b 6
+@xcopy stage\lib\*.dll %PREFIX%\Scripts      /y /i /s
+@if errorlevel 1 exit /b 6
+@xcopy boost %PREFIX%\Library\include\boost  /y /i /s /q
+@if errorlevel 1 exit /b 6
 
-echo Build environment ready. Please run "python setup.py build" now.
+@echo Build environment ready. Please run "python setup.py build" now.
 
