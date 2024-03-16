@@ -2,6 +2,7 @@
 (CPython) &lt;==> (.NET) direct interop via embedded CLR (.pyd) through Boost.Python
 
 [![Watch My Video!](https://img.youtube.com/vi/Ce9kN8U1Pw8/0.jpg)](https://youtu.be/Ce9kN8U1Pw8&list=PLAetEEjGZI7OUBYFoQvI0QcO9GKAvT1xT&index=1)
+[![Watch My Video!](https://img.youtube.com/vi/SB0SYEjZtbE/0.jpg)](https://youtu.be/SB0SYEjZtbE8&list=PLAetEEjGZI7OUBYFoQvI0QcO9GKAvT1xT&index=1)
 
 ### Windows
 
