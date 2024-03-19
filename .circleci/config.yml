@@ -18,7 +18,7 @@ jobs:
             python --version
             pip install wheel
             cd .\libs\dotnet-dev && .\bld.bat
-            .\build_wheel.bat
+            .\build_wheel.bat 
       - store_artifacts:
           path: ./dist
           destination: dist
