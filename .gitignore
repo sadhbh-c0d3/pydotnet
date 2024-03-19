@@ -1,9 +1,11 @@
-libs/dotnet-dev/boost*/*
-.vs/
+/.vs
+/build
+/dist
+/libs/dotnet-dev/boost*
 PyDotnet.vcxproj.user
 dotnet.egg-info/
 dotnet/*.exp
 dotnet/*.lib
 dotnet/*.pdb
 dotnet/*.dll
-
+__pycache__/
