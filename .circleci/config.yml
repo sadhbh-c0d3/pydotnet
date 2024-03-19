@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - run: systeminfo
-      - run: choco install python --version=3.12.2 --force -y
+      - run: choco install python -y
       - run: python --version
       - run: pip install wheel
       - run:
