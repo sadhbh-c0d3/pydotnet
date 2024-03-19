@@ -13,17 +13,11 @@ jobs:
       - run: systeminfo
       - run: choco install python --version=3.12.2 --force -y
       - run:
-          name: Check Python Version
+          name: Build 
           command: |
             python --version
             pip install wheel
-      - run:
-          name: Build Dependencies
-          command: |
             cd .\libs\dotnet-dev && .\bld.bat
-      - run:
-          name: Build Wheel
-          command: |
             .\build_wheel.bat
       - store_artifacts:
           path: ./dist
