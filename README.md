@@ -43,7 +43,7 @@ Stay tuned! More to come...
 ## Usage
 
 #### Example
-
+```python
     import dotnet.seamless
     import System
     
@@ -58,52 +58,50 @@ Stay tuned! More to come...
     lst.AddRange([4,5,6])
     
     lst.FindIndex(lambda x: x > 3)
-
+```
 #### Explanation
 
 Import .NET seamless integration for CPython shell
-
+```python
     import dotnet.seamless
-    
+```
 Import .NET namespace
-
+```python
     import System
-    
+```
 Import type from .NET namespace
-
+```python
     from System.Collections.Generic import List
-    
+```    
 Create an instance of .NET type.
 This shows also how to specialize .NET generic type
-
+```python
     lst = List[Int32]()
-
+```
 Call instance method of .NET type. 
 This also converts Python int into .NET Int32
-
+```python
     lst.Add(1)
     lst.Add(2)
     lst.Add(3)
-    
+```    
 Call instance method of .NET type. 
 This also converts Python list into .NET IEnumerable
-
+```python
     lst.AddRange([4,5,6])
-
+```
 Call instance method of .NET type.
 Here Python lambda gets converted into .NET Predicate<Int32>.
 The invocation jumps from Python into .NET CLR and calls back to Python lambda
-
+```python
     lst.FindIndex(lambda x: x > 3)
-
-
-
+```
 
 
 ## Installation
-
+```
     pip install dotnet
-
+```
 ## Documentation
 
 See https://github.com/sadhbh-c0d3/pydotnet/blob/main/SLIDES.md
