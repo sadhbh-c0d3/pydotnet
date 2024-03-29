@@ -10,7 +10,7 @@ This is regular module for native Python *(CPython)*, and it uses .NET runtime l
 * Build .NET assembly directly in Python - no additional tools required!
 * Experiment with .NET libraries
 * Automate testing of .NET projects
-* Build conrol panels using powerful .NET libraries, and flexibility of Python
+* Build control panels using powerful .NET libraries, and flexibility of Python
 
 ## Watch
 
