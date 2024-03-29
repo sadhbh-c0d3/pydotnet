@@ -5,29 +5,29 @@
 ## Getting Started
 
 Import *dotnet* module
-
+```python
     import dotnet.seamless
-
+```
 **NOTE** The `dotnet.seamless` module is tailored to provide seamless Python integration with .NET. 
 When importing dotnet (and not dotnet.seamless) the support for generic and extension methods is not installed, 
 basic .NET types and built-in function overrides are not integrated into `__main__`.
 
 ## Loading Assemblies
 The assembly related functions are:
-
+```python
     print(pretty_names(x for x in dir(dotnet) if x in dotnet.asmresolve.__all__))
 
     add_assemblies
     assemblies
     load_assemblies, load_assembly
     set_assemblies
-
+```
 **NOTE** Use `add_assemblies()` to add path where your .NET assemblies are located, and 
 use `load_assembly()` or `load_assemblies()` to load.
 
 ## .NET types integrated into __main__ when importing dotnet.seamless
 Certain basic .NET types are automatically imported into __main__:
-
+```python
     # Print all from `dotnet.commontypes` that were integrated into `__main__` by `dotnet.seamless`
     print(pretty_names((x for x in dir() if x in dir(dotnet.commontypes)), 1, 8))
     Action1, Action2, Action3, Action4, Action5, Action6, Action7, Action8
@@ -45,56 +45,56 @@ Certain basic .NET types are automatically imported into __main__:
     Void
 
     dotnet
-    
+```
 **NOTE** All built-in Python types are in lower-case and .NET types are in CamelCase.
 e.g. So when you see Int32 or String it's a .NET type, and if you see int or str it's Python type.
 
 ## Shadowed builtins integrated into __main__ when importing dotnet.seamless
 There are built-in functions are defined in dotnet.overrides and they are:
-
+```python
     # Print all from `dotnet.overrides` that were integrated into `__main__` by `dotnet.seamless`
     print(pretty_names(x for x in dir() if x in dotnet.overrides.__all__))
     
     help
     isinstance, issubclass
     type
-
+```
 **NOTE** They call original built-in functions when used with Python types.
 
 ## Import .NET type into Python namespace
 We can import .NET namespace just like if it was Python module:
-
+```python
     import System
     System.Int32
 
     <class Int32>
-
+```
 And we can import specific symbols from .NET namespace into current Python scope:
-
+```python
     from System.Collections.Generic import List
     List
 
     <class List`1>
-
+```
 ## Managed types available by default
 Certain managed types, which map to Python types are available from start
-
+```
     System: Void, Object, String
     Numeric: Int16, Int32, Int64, UInt16, UInt32, UInt64, Byte, SByte, Single, Double, Decimal,
     Collections: Array[T], List[T], Dictionary[K, V],
     Tuples: Tuple1[T1], Tuple2[T1, T2], ..., Tuple8[T1, T2,..., T8],
     Actions: Action1[T1], Action2[T1, T2], ..., Action8[T1, T2,..., T8],
     Functions: Func1[T1], Func2[T1, T2], ..., Func8[T1, T2,..., T8],
-
+```
 **NOTE** These types are imported by dotnet.commontypes. 
 Some of these types are defined within dotnet.proxytypes, and 
 because of that we should use these and not try to import ones from System.
-
+```python
     # Example types
     String, Int32, Tuple2[String, Int32]
 
-`   (<class String>, <class Int32>, <class Tuple`2>)
- 
+   (<class String>, <class Int32>, <class Tuple`2>)
+``` 
 ### Built-in Type Conversions
 Conversion of Python values into .NET method arguments
 When calling .NET method the parameters are converted from Python to .NET depending on managed method signature:
@@ -114,6 +114,7 @@ All .NET objects are represented by PyDotnet.Interop.Object.
 When Python function get converted to .NET Action<>, Func<>, or Delegate there is assumption that number of parameters of the Python function matches target Action<>, Func<>, or Delegate.
 
 #### Example
+```python
     lst = List[Int32]()
 
     # Python `int` gets converted into `Int32`
@@ -126,7 +127,7 @@ When Python function get converted to .NET Action<>, Func<>, or Delegate there i
     lst
 
     [1, 2, 3, 4, 5, 6]
-
+```
 ### Conversion of .NET method return values into Python
 When calling .NET method the returned value is converted to Python:
 
@@ -137,12 +138,14 @@ When calling .NET method the returned value is converted to Python:
 - Any other .NET types are not converted and PyDotnet.Interop.Object is used to represent them in Python
 
 #### Example
+```python
     lst = List[Int32]([1,2,3,4,5,6])
 
     # Python `lambda` gets converted into `System.Predicate<Int32>`
     lst.FindIndex(lambda x: x > 3)
 
     3
+```
 ### Conversion of Python values into .NET method arguments of type System.Object
 When .NET method argument is of type System.Object it can accept any type.
 
@@ -151,7 +154,7 @@ The dotnet module provides automatic conversions:
 - Any int or long is converted to Int32 or Int64
 - Any float is converted to Double
 - Any str is converted to String
-
+```python
         # We construct a list of `System.Object`, which even includes `List<Int32>` or `Action<System.Object>`
         lst = List[Object]([1, 2.5, List[Int32]([1,2,3]), Action1[Object](lambda x: 5)])
 
@@ -159,10 +162,10 @@ The dotnet module provides automatic conversions:
         print('Types', map(type, lst))
         Items [1, 2.5, [1, 2, 3], <Action`1 instance>]
         Types [<type 'int'>, <type 'float'>, <List`1 type 'instance'>, <Action`1 type 'instance'>]
-
+```
 ### Explicit type conversion of parameters
 Sometimes it is not possible to get correct automated guess to what type Python value should be converted. It is possible to explicitly specify parameter types.
-
+```python
     z = List[Object]()
 
     # Calling `Add()` method while specifying exact parameter type
@@ -174,14 +177,14 @@ Sometimes it is not possible to get correct automated guess to what type Python 
     map(type, z)
 
     [int, float, NoneType, str]
-
+```
 When we call help(z.Add) we'll see `Add(item: Object)` signature
-
+```python
     help(z.Add)
-
+```
 Help on method `List[Object]`.Add in module mscorlib:
-  
-      Add(item: Object)
+```
+    Add(item: Object)
 
     References:
      |
@@ -191,13 +194,13 @@ Help on method `List[Object]`.Add in module mscorlib:
      |
      |    within namespace System.Collections.Generic:
     ...
-
+```
 But when we call `help(z.Add[Double])` we'll see `Add(item: Double)` signature
-
+```python
     help(z.Add[Double])
-    
+```    
 Help on method `List[Object].Add` in module `mscorlib`:
-  
+```  
     Add(item: Double)
   
 
@@ -209,37 +212,38 @@ Help on method `List[Object].Add` in module `mscorlib`:
      |
      |    within namespace System:
     ...
-
+```
 ## Collections
 ### Array Type `T[]`
 An array type `T` can be created using `Array[T]`
-
+```python
     a = Array[Int32]([1,2,3,4])
 
     print(repr(a), ':', type(a))
     [1, 2, 3, 4] : System.Int32[]
+```
 List Type `List<T>`
 A `List[T]` can be used to store a sequence of `T` elements.
-
+```python
     b = List[Int32]([1,2,3,4])
 
     print(repr(b), ':', type(b))
     [1, 2, 3, 4] : System.Collections.Generic.List`1[System.Int32]
-    
+```
 ### Dictionary Type `Dictionary<K,V>`
 A `Dictionary[K,V]` can be used to create `K => V` mapping
-
+```python
     c = Dictionary[String, Int32]({'a':10, 'b':20, 'c':30})
 
     print(repr(c), ':', type(c))
     {'a': 10, 'c': 30, 'b': 20} : System.Collections.Generic.Dictionary`2[System.String,System.Int32]
-
+```
 ## Type of .NET object
 We can use `type(x)` to see what is the type of our .NET object `x`.
 
 The `type()` function is imported to `__main__` and shadows built-in function when we `import dotnet.seamless`.
 Otherwise it's available in `dotnet.overrides module`.
-
+```python
         # Let's see what will be the type for Array[Int32]
         print('dotNET Type:', type(a))
         print('Python type:', builtins.type(a))
@@ -253,13 +257,13 @@ Otherwise it's available in `dotnet.overrides module`.
 
         dotNET Type: System.Collections.Generic.List`1[System.Int32]
         Python type: <class 'dotnet.PyDotnet.Object'>
-
+```
 The overriden `type()` function only changes behavior for .NET objects, and works as always for Python objects
-
+```python
         type(1), type('Hello World!'), type([1, 2, 3]), type({'a':1, 'b':2})
 
         (int, str, list, dict)
-
+```
 ## Help system
 The `help()` function is imported to main and shadows built-in function when we import `dotnet.seamless`. 
 Otherwise it's available in `dotnet.overrides module`.
@@ -276,11 +280,11 @@ We can use `help(x)` to see help for `x`, which can be any of .NET:
 **NOTE** The `help(dotnet.clr)` gives list of all namespaces and all loaded assemblies.
 
 ### Help on namespace
-
+```python
     help(System.Collections)
-
+```
 Help on namespace System.Collections:
-
+```
     namespace System.Collections
      |
      |  Data and other attributes defined here:
@@ -292,13 +296,13 @@ Help on namespace System.Collections:
      |  class CaseInsensitiveHashCodeProvider
      |  class CollectionBase
     ...
-
+```
 ### Help on method
-
+```python
     help(List[Int32].Add)
-    
+```
 Help on method `List[Int32].Add` in module `mscorlib`:
-  
+``` 
     Add(item: Int32)
 
     References:
@@ -309,14 +313,14 @@ Help on method `List[Int32].Add` in module `mscorlib`:
      |
      |    within namespace System.Collections.Generic:
     ...
-
+```
 
 ### Help on constructors
-
+```python
     help(List[Int32].__createinstance__)
-    
+```
 Help on method `List[Int32].__init__` in module `mscorlib`:
-  
+```
       __init__() -> List[Int32]
 
       __init__(capacity: Int32) -> List[Int32]
@@ -328,13 +332,13 @@ Help on method `List[Int32].__init__` in module `mscorlib`:
      |
      |  ----------------------------------------------------------------------
     ...
-
+```
 ## Assemblies and Namespaces
 ### Assembly Injection
 In later example we will want to load some C# assembly, so we start with an example of how we can actually create an assembly directly from Python code!
 
 We will build some assembly containing some example classes. It will go to `C:\Temp\PyDotnet` folder in our case.
-
+```python
     # And here comes C# source-code
     source = """
     using System;
@@ -412,39 +416,39 @@ We will build some assembly containing some example classes. It will go to `C:\T
 
     # Let's build
     dotnet.build_assembly(source, output, references)
-
+```
 
 ### Assemblies
 .NET assemblies can be loaded using `load_assembly()`, but first `add_assemblies()` need to be used to point to assemblies location.
-
+```python
     dotnet.add_assemblies(r'C:\\Temp\\PyDotnet')
-    
+``` 
 **NOTE** The `add_assemblies()` can be called multiple times to add multiple locations, 
 and `load_assembly()` will use FIFO priority.
-
+```python
     # We can use `help(clr)` to see list of namespaces and assemblies, or we can use `assemblies(filter)`
     names = dotnet.assemblies('Beach')
 
     print(pretty_names(names, 10, 1))
     Beach.Sea
-
+```
 ### Mutiple assemblies can be loaded at once using pattern matching.
-
+```python
     dotnet.load_assemblies('Beach')
-
+```
 We can obtain list of loaded assemblies with call to loaded_assemblies()
-
+```python
     # Let's see what 'Beach' assemblies were loaded
     names = set(x.FullName for x in dotnet.loaded_assemblies('Beach'))
 
     print(pretty_names(names, 10, 1))
     Beach.Sea, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-
+```
 ### Namespaces
 We can see available namespaces with call to namespaces()
 
 **NOTE** By supplying parameter list will be filtered.
-
+```python
     # Let's see what are the namespaces containing 'Beach' word
     names = dotnet.namespaces('Beach')
 
@@ -452,10 +456,10 @@ We can see available namespaces with call to namespaces()
     Beach
     Beach.Sea
     Beach.Sea.Ships
-
+```
 ### Accessing types defined within namespaces
 We can access types in those namespaces via `clr`
-
+```python
     # We can use `help()` to see what types are defined in the namespace
     help(dotnet.clr.Beach.Sea.Ships)
     Help on namespace Beach.Sea.Ships:
@@ -468,9 +472,9 @@ We can access types in those namespaces via `clr`
      |  class IShip
      |  class Ranges
      |  class ShipExtensions
-
+```
 We can also access types in those namespaces by using import statement
-
+```python
     # We can also use `import`
     import Beach.Sea
 
@@ -479,10 +483,10 @@ We can also access types in those namespaces by using import statement
 
     # The `help()` can be used practically on anything
     help(Beach.Sea.Ships.Ranges.SetRanges)
-
+```
 Help on method Ranges.SetRanges in module Beach.Sea:
-  
-          static SetRanges(ranges: IDictionary[String, Int32])
+```
+        static SetRanges(ranges: IDictionary[String, Int32])
 
 
         References:
@@ -493,23 +497,23 @@ Help on method Ranges.SetRanges in module Beach.Sea:
          |
          |    within namespace System:
         ...
-
+```
 ## String representation of .NET object
 Python defines two functions `str()` and `repr()`.
 
 The implementation of `str()` for .NET objects calls `ToString()`
 The implementation of `repr()` for .NET objects creates Python compatible representation string
-
+```python
     x = List[Int32]([1,2,3,4])
 
     print('repr(): ' + repr(x) + ', str(): ' + str(x))
     repr(): [1, 2, 3, 4], str(): System.Collections.Generic.List`1[System.Int32]
-
+```
 ### Pretty printing
 In addition to `str()` and `repr()` new function `pretty()` has been added for .NET objects.
 
 The `pretty()` function prints out the properties of the object, or multiple objects.
-
+```python
     from System import TimeSpan, DateTime
     from dotnet import pretty
 
@@ -543,13 +547,13 @@ The `pretty()` function prints out the properties of the object, or multiple obj
         Ticks:	635872032000000000
         TimeOfDay:	instance of TimeSpan
         Year:	2016
-
+```
 **NOTE** The main purpose of pretty() function is to use it with interactive Python shell.
 
 ## Methods and Constructors
 ### Method Overloads
 Automatic resolution of method overloads is supported.
-
+```python
     x = List[Int32]([1,2,3,4])
 
     # Let's use `FindIndex(Int32 startIndex, Predicate<Int32> match)`
@@ -558,9 +562,9 @@ Automatic resolution of method overloads is supported.
     3
 
     help(x.FindIndex)
-    
+```   
 Help on method `List[Int32].FindIndex` in module `mscorlib`:
-  
+```
       FindIndex(match: Predicate[Int32]) -> Int32
 
       FindIndex(startIndex: Int32, match: Predicate[Int32]) -> Int32
@@ -572,12 +576,12 @@ Help on method `List[Int32].FindIndex` in module `mscorlib`:
      |
      |  ----------------------------------------------------------------------
     ...
-
+```
 ### Explicit method overload selection
 Sometimes automatic method overload resolution doesn't work as expected. We can still specify overload explicitly.
 
 **NOTE** None can be used to select parameterless overload.
-
+```python
     x = List[Int32]([1,2,3,4])
 
     # Let's use `FindIndex(Int32 startIndex, Predicate<Int32> match)`
@@ -600,16 +604,16 @@ Sometimes automatic method overload resolution doesn't work as expected. We can 
      |
      |    within namespace System.Collections.Generic:
     ...
-
+```
 ### Constructors
 The constructors can be accessed via __createinstance__ property, and it may represent constructor overloads.
 
-
+```python
     # Let's see how can we construct a List of Int32
     help(List[Int32].__createinstance__)
-
+```
 Help on method `List[Int32].__init__` in module `mscorlib`:
-
+```python
       __init__() -> List[Int32]
 
       __init__(capacity: Int32) -> List[Int32]
@@ -621,12 +625,12 @@ Help on method `List[Int32].__init__` in module `mscorlib`:
      |
      |  ----------------------------------------------------------------------
     ...
-
+```
 ### Explicit constructor selection
 Sometimes automatic constructor resolution doesn't work as expected. We can still specify overload explicitly.
 
 **NOTE** None can be used to select parameterless constructor.
-
+```python
     # Let's select first constructor (the parameterless one)
     help(List[Int32][None])
     Help on method List[Int32].__init__ in module mscorlib:
@@ -642,10 +646,10 @@ Sometimes automatic constructor resolution doesn't work as expected. We can stil
      |
      |    within namespace System.Collections.Generic:
     ...
-
+```
 ### Generic methods
 The generic methods are supported seamlessly.
-
+```python
     from Beach.Sea.Ships import Frigate, ShipExtensions
 
     frigate = Frigate('DaVinci')
@@ -673,20 +677,20 @@ The generic methods are supported seamlessly.
      |
      |    within namespace Beach.Sea.Ships:
     ...
-
+```
 ### Explicit generic parameter types specialization
 Sometimes automatic generic parameter type resolution doesn't work. In those cases we can still select specialization that we want to use.
-
+```
     In [44]:
     # Explicit generic parameter types specialization
     ShipExtensions.AddPayload[List[Int32]](frigate, [1,2,3])
-
+```
 **Note** that since we explicilty say that AddPayload method takes a List<Int32> we can pass python list, and it will implicitly get converted into List<int32>, because this is the expected type.
 
 
 ## Extension methods
 The extension methods are supported seamlessly.
-
+```python
     frigate = Frigate("DaVinci")
 
     Beach.Sea.Ships.Ranges.SetRanges({'Frigate':2000})
@@ -694,9 +698,9 @@ The extension methods are supported seamlessly.
     # Calling extension method GetRange()
     frigate.GetRange()
     2000
-
+```
 We can also call any generic extension method:
-
+```python
     frigate = Frigate("DaVinci")
 
     payload = List[Int32]([1,2,3])
@@ -713,12 +717,12 @@ We can also call any generic extension method:
 
     frigate.Payload.Invoke(1)
     x =  1
-
+```
 Should the extension method be generic, the type parameters can be specialized explicitly.
-
+```python
     frigate.AddPayload[List[Int32]]([1,2,3])
 
     frigate.Payload
     [1, 2, 3]
-
+```
 
