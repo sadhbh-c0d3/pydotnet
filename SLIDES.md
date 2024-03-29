@@ -1,6 +1,6 @@
 # Python vs. dotNET Interoperability
 
-**NOTE** *This is MD copy of these [Python Notebook Slides](https://github.com/sadhbh-c0d3/pydotnet/tree/main/slides)*
+**NOTE** *This is Markdown copy of these [Python Notebook Slides](https://github.com/sadhbh-c0d3/pydotnet/tree/main/slides)*
 
 ## Getting Started
 
