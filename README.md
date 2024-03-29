@@ -6,7 +6,7 @@
 
 ### Windows
 
-PyDotnet only works on Windows due to integration with Microsoft .NET environment
+PyDotnet only works on Windows due to integration with Microsoft .NET Framework
 ([.NetCore C++/CLI for Linux and MacOS - Is not supported](https://developercommunity.visualstudio.com/t/netcore-ccli-for-linux-and-macos/873014))
 
 Works natively on Windows 64-Bit (x86), and also on Windows on ARM64 in AMD64 emulation mode.
