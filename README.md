@@ -4,11 +4,24 @@ Direct interop between Python and .NET assemblies via Microsoft C++/CLR and Boos
 
 This is regular module for native Python *(CPython)*, and it uses .NET runtime library *(mscoree.dll)* to natively support .NET assemblies.
 
-
+*No annotations required! You can load .NET assemblies just like that!*
 -----
+* Load into Python any .NET assembly
+* Build .NET assembly directly in Python - no additional tools required!
+* Experiment with .NET libraries
+* Automate testing of .NET projects
+* Build conrol panels using powerful .NET libraries, and flexibility of Python
+
+## Watch
 
 [![Watch My Video!](https://img.youtube.com/vi/Ce9kN8U1Pw8/0.jpg)](https://youtu.be/Ce9kN8U1Pw8&list=PLAetEEjGZI7OUBYFoQvI0QcO9GKAvT1xT&index=1)
 [![Watch My Video!](https://img.youtube.com/vi/SB0SYEjZtbE/0.jpg)](https://youtu.be/SB0SYEjZtbE8&list=PLAetEEjGZI7OUBYFoQvI0QcO9GKAvT1xT&index=1)
+
+### Watch on Loom
+- [Loom: PyDotnet - Basics](https://www.loom.com/share/a0fed0b141a54e6ead4a130009e29f89)
+- [Loom: Pydotnet - Generic Extension Methods](https://www.loom.com/share/6274a9bfc88f4f369907285b420d2730)
+
+## Compatibility
 
 ### Windows
 
@@ -24,12 +37,6 @@ Works well on Windows on ARM64 on Apple Silicon: [Parallels® Desktop 18 for Mac
 ### Linux
 
 Haven't tested, but this might work: [Windows-Docker-Machine](https://github.com/StefanScherer/windows-docker-machine#windows-docker-machine)
-
-
-## Videos
-
-- [Loom: PyDotnet - Basics](https://www.loom.com/share/a0fed0b141a54e6ead4a130009e29f89)
-- [Loom: Pydotnet - Generic Extension Methods](https://www.loom.com/share/6274a9bfc88f4f369907285b420d2730)
 
 Stay tuned! More to come...
 
