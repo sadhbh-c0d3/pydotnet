@@ -1,4 +1,4 @@
-# Py.NET *(The ORIGINAL PyDotnet)* `pip install dotnet`
+# Py.NET *(The ORIGINAL PyDotnet)*
 
 ```
     pip install dotnet
