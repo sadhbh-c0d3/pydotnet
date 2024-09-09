@@ -1,4 +1,14 @@
-# Py.NET (pip install dotnet)
+# Py.NET *(The ORIGINAL PyDotnet)* `pip install dotnet`
+
+```
+    pip install dotnet
+```
+
+## !!! IMPORTANT NOTE !!! ##
+
+The PyPI module name is `dotnet` and not ~`pydotnet`~. I have noticed some someone has created a module called ~`pydotnet`~.
+
+## About ##
 
 Direct interop between Python and .NET assemblies via Microsoft C++/CLR and Boost.Python.
 
