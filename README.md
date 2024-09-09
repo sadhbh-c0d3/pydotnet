@@ -1,12 +1,22 @@
-# Py.NET *(The ORIGINAL PyDotnet)*
+# $${\color{#3c6491}(Py)}$$ dotnet $${\color{gray}|}$$ $${\color{#3c6491}Py\color{yellow}.\color{#693c91}NET}$$
+
+$${\color{red}IMPORTANT: \space
+\color{#cc4b5f}The \space PyPI \space module \space name \space is \space
+\color{text} dotnet \space \color{red} and \space not
+\color{#e6932e} pydotnet}$$
 
 ```
     pip install dotnet
 ```
 
-## !!! IMPORTANT NOTE !!! ##
+- $${\color{gray}PIP \space module \space name:}$$ `dotnet`
+- $${\color{gray}Repository \space name:}$$ `PyDotnet`
+- $${\color{gray}Open \space Source \space Release \space:}$$ 2016 on BitBucket
+- $${\color{gray}Moved \space to \space GitHub \space in:}$$ March 2021
 
-The PyPI module name is `dotnet` and not ~`pydotnet`~. I have noticed some someone has created a module called ~`pydotnet`~.
+[![Watch My Video!](https://img.youtube.com/vi/Ce9kN8U1Pw8/0.jpg)](https://youtu.be/Ce9kN8U1Pw8&list=PLAetEEjGZI7OUBYFoQvI0QcO9GKAvT1xT&index=1)
+[![Watch My Video!](https://img.youtube.com/vi/SB0SYEjZtbE/0.jpg)](https://youtu.be/SB0SYEjZtbE8&list=PLAetEEjGZI7OUBYFoQvI0QcO9GKAvT1xT&index=1)
+
 
 ## About ##
 
@@ -22,14 +32,11 @@ This is regular module for native Python *(CPython)*, and it uses .NET runtime l
 * Automate testing of .NET projects
 * Build control panels using powerful .NET libraries, and flexibility of Python
 
-## Watch
-
-[![Watch My Video!](https://img.youtube.com/vi/Ce9kN8U1Pw8/0.jpg)](https://youtu.be/Ce9kN8U1Pw8&list=PLAetEEjGZI7OUBYFoQvI0QcO9GKAvT1xT&index=1)
-[![Watch My Video!](https://img.youtube.com/vi/SB0SYEjZtbE/0.jpg)](https://youtu.be/SB0SYEjZtbE8&list=PLAetEEjGZI7OUBYFoQvI0QcO9GKAvT1xT&index=1)
 
 ### Watch on Loom
 - [Loom: PyDotnet - Basics](https://www.loom.com/share/a0fed0b141a54e6ead4a130009e29f89)
 - [Loom: Pydotnet - Generic Extension Methods](https://www.loom.com/share/6274a9bfc88f4f369907285b420d2730)
+
 
 ## Compatibility
 
